@@ -11,7 +11,7 @@
     }
 
     # routes to the given URL
-    public static function run(string $routeUrl, $routeAction, string $acceptedHTTPVerbs)
+    public static function run(string $routeUrl, $routeAction, string $acceptedHTTPVerbs = "GET")
     {
       $requestUri = self::parseUrl();
       if (preg_match('@^'.$requestUri.'$@', $routeUrl, $parsedDataFromUri)) {

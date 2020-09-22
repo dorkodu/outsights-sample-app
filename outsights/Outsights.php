@@ -22,7 +22,7 @@
      **/
     public function run()
     {
-      require_once "Router/web.php";
+      require_once "Router/routemap.php";
     }
   }
   
