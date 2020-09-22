@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+ <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+ <title>{pageTitle} - Dorkodu</title>
+ <meta name="theme-color" content="#fff">
+ <meta name="author" content="Doruk Dorkodu">
+ <meta name="description" content="{pageDescription}">
+ <meta name="keywords" content="{pageKeywords}">
+ <link rel="icon" href="./image/favicon.gif">
+ {pageStylesheets}
+ </head>
+<body>
+	<div id="page-wrapper">
+    {header.pagelet}
+		<div id="content">
+      <div id="pod">
+  		  {personanongrata.pagelet}
+      </div>
+      <div id="news-feed">
+        {content}
+          <section class="set">
+            <h2>Latest Posts</h2>
+            <div class="post-feed">
+              <a href="#" class="post-element">
+                <img class="post-element__image" src="./public/images/abd-de-is-kurmak.jpg">
+                <div class="post-element__content">
+                  <p class="post-element__posted-date">13.08.2020</p>
+                  <h4 class="post-element__title">The Cookbook of a UX Designer</h4>
+                  <p class="post-element__sum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer molestie risus et leo orci aliquam.</p>
+                  <p class="post-element__read-count"><i class="inline-icon dw-book-eyeglasses"></i><span class="inline-text">1,1M</span></p>
+                </div>
+              </a>
+              <a href="#" class="post-element">
+                <img class="post-element__image" src="./public/images/abd-de-is-kurmak.jpg">
+                <div class="post-element__content">
+                  <p class="post-element__posted-date">13.08.2020</p>
+                  <h4 class="post-element__title">The Cookbook of a UX Designer</h4>
+                  <p class="post-element__sum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer molestie risus et leo orci aliquam.</p>
+                  <p class="post-element__read-count"><i class="inline-icon dw-book-eyeglasses"></i><span class="inline-text">1,1M</span></p>
+                </div>
+              </a>
+              <a href="#" class="post-element">
+                <img class="post-element__image" src="./public/images/abd-de-is-kurmak.jpg">
+                <div class="post-element__content">
+                  <p class="post-element__posted-date">13.08.2020</p>
+                  <h4 class="post-element__title">The Cookbook of a UX Designer</h4>
+                  <p class="post-element__sum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer molestie risus et leo orci aliquam.</p>
+                  <p class="post-element__read-count"><i class="inline-icon dw-book-eyeglasses"></i><span class="inline-text">1,1M</span></p>
+                </div>
+              </a>
+              <a href="#" class="post-element">
+                <img class="post-element__image" src="./public/images/abd-de-is-kurmak.jpg">
+                <div class="post-element__content">
+                  <p class="post-element__posted-date">13.08.2020</p>
+                  <h4 class="post-element__title">The Cookbook of a UX Designer</h4>
+                  <p class="post-element__sum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer molestie risus et leo orci aliquam.</p>
+                  <p class="post-element__read-count"><i class="inline-icon dw-book-eyeglasses"></i><span class="inline-text">1,1M</span></p>
+                </div>
+              </a>
+              <a href="#" class="post-element">
+                <img class="post-element__image" src="./public/images/Milyar-Liralık-Bir-Şirket-Kurmak-için-Yapmanız-Gereken-7-Şey-500x282.jpg">
+                <div class="post-element__content">
+                  <p class="post-element__posted-date">13.08.2020</p>
+                  <h4 class="post-element__title">How to build a billion dollar business?</h4>
+                  <p class="post-element__sum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer molestie risus et leo orci aliquam.</p>
+                  <p class="post-element__read-count"><i class="inline-icon dw-book-eyeglasses"></i><span class="inline-text">1,1M</span></p>
+                </div>
+              </a>
+              <a href="#" class="post-element">
+                <img class="post-element__image" src="./public/images/abd-de-is-kurmak.jpg">
+                <div class="post-element__content">
+                  <p class="post-element__posted-date">13.08.2020</p>
+                  <h4 class="post-element__title">The Cookbook of a UX Designer</h4>
+                  <p class="post-element__sum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer molestie risus et leo orci aliquam.</p>
+                  <p class="post-element__read-count"><i class="inline-icon dw-book-eyeglasses"></i><span class="inline-text">1,1M</span></p>
+                </div>
+              </a>
+            </div>
+            <div>
+              <a href="./posts" class="posts-see-more-button standard-button">See More Post</a>    
+            </div>
+          </section>
+          <section class="set">
+            <h2>Latest Work</h2>
+            <div class="work-feed">
+              <a class="work-element" href="#">
+                <h4 class="work-element__title">Dorkodu</h4>
+                <p class="work-element__summary">The knowledge based web search engine.</p>
+                <div class="work-element__stats">
+                  <p class="work-element__stat"><i class="inline-icon dw-book-eyeglasses"></i><span class="inline-text">3,1B</span></p>
+                  <p class="work-element__stat"><i class="inline-icon dw-cool"></i><span class="inline-text">500+</span></p>
+                </div>
+              </a>
+              <a class="work-element" href="#">
+                <h4 class="work-element__title">Cyudebeam</h4>
+                <p class="work-element__summary">The social knowledge network for humanity and a better tomorrow. Eiusmod voluptate proident ipsum pariatur id sint mollit.</p>
+                <div class="work-element__stats">
+                  <p class="work-element__stat"><i class="inline-icon dw-book-eyeglasses"></i><span class="inline-text">3,1B</span></p>
+                  <p class="work-element__stat"><i class="inline-icon dw-cool"></i><span class="inline-text">500+</span></p>
+                </div>
+              </a>
+              <a class="work-element" href="#">
+                <h4 class="work-element__title">Dorkodu</h4>
+                <p class="work-element__summary">The knowledge based web search engine.</p>
+                <div class="work-element__stats">
+                  <p class="work-element__stat"><i class="inline-icon dw-book-eyeglasses"></i><span class="inline-text">3,1B</span></p>
+                  <p class="work-element__stat"><i class="inline-icon dw-cool"></i><span class="inline-text">500+</span></p>
+                </div>
+              </a>
+              <a class="work-element" href="#">
+                <h4 class="work-element__title">Dorkodu</h4>
+                <p class="work-element__summary">The knowledge based web search engine.</p>
+                <div class="work-element__stats">
+                  <p class="work-element__stat"><i class="inline-icon dw-book-eyeglasses"></i><span class="inline-text">3,1B</span></p>
+                  <p class="work-element__stat"><i class="inline-icon dw-cool"></i><span class="inline-text">500+</span></p>
+                </div>
+              </a>
+            </div>
+            <div>
+              <a href="./work" class="posts-see-more-button standard-button">See More Work</a>    
+            </div>
+          </section>
+        <article class="set">
+          <h1 class="motto">I am creating things that maintain, gather and improve human knowledge to make it meaningful, useful and reachable.</h1>
+          <section class="set">
+            <div class="person-set">
+              <img src="./public/images/neo.gif" alt="">
+              <div class="person-set-content">
+                <h4>Doruk Dorkodu</h4>
+                <p>I am a big picture thinker. I like to connect the dots and find paths to humanity's problems. I do this by designing and inventing new, creating products that matter.</p>
+              </div>
+            </div>
+          </section>
+          <section>
+            <h2>The Story of a Founder</h2>
+            <h3>My story begins</h3>
+            <div class="image-set">
+              <img src="./public/images/IMG-20191116-WA0010.jpg" class="" alt="A deck of dollars in a human hand.">
+              <p>A deck of dollars in a human hand.</p>
+            </div>
+            <p class="article">When I was a little child -around 7-8 years old- I started to realize the world around me; read history books, encyclopedias etc. And that taught me the spirit of time and nature of changes. And we have no idea how things will be tomorrow...</p>
+            <p class="article">A long time after, at secondary school, I learnt that history or art wasn't everything. And being always dreaming to be an inventor, I saw the future</strong> (where the world of west have already started gathering the fruits)</strong> : <strong>Software.</strong></p>
+            <p class="article">At the age of 11, I started programming with just one goal in mind. <br><strong>Changing the world one day.</strong><br> I always know one day changing the world, with whatever the price I have to pay. The code looked more than a set of mighty words. <strong>It was the real poetry.</strong> It was art. It had a culture. <strong>There was a purpose, meaning and mission to make the great.</strong> So I loved it! </p>
+            <h3>My Change Moment</h3>
+            <div class="image-set">
+              <img src="./public/images/tedxvefa-bina.jpg" class="" alt="Vefa Lisesi">
+              <p>Vefa Lisesi</p>
+            </div>
+            <p class="article">My life changed when I was a prep student at the <strong>Vefa Lisesi</strong>, which is a historical and cultural high school in my country, Türkiye. I was wanted to create a web site for TEDxVefaLisesi.
+              Welcome Internet!</p>
+            <p class="article">There is the opportunity. You write the code and give it a go. <strong>Then everyone can use what you have built. Whenever, Wherever, Whatever they would like.</strong> Now I could design the UI how I want, there was no limit. Mobile or desktop, which functionality I want, whatever it is...</p>
+            <h3>My Eureka! Moment</h3>
+            <div class="image-set">
+              <img src="./public/images/dorkodu-banner.png" class="" alt="Dorkodu logo with our motto">
+              <p>Dorkodu logo with our motto</p>
+            </div>
+            <p class="article">Yes, Internet is cool, exclusive, fun and a better life opportunity. But things have changed when I realized about Web 3.0 and digged deeper in Web programming. Do we really get the true information from Web? <strong>NO. All we get is some pages that others created.</strong> There is no chance to get what/how you want.</p>
+            <p class="article">Eureka! Consider it this way; if we have a search engine that <strong>we only get the true, meaningful and useful knowledge</strong>, what would change? <strong>EVERYTHING.</strong> The search results are <strong>little knowledge pieces gathered from true and pure knowledge.</strong>  Cool, isn't it?</p>
+            <p class="article">This is how <a href="#">the Dorkodu Project</a> and my new life with a passion started.</p>
+          </section>
+          <section>
+            <h2>Who I am - by Questions</h2>
+            <h3>What do I do?</h3>
+            <p class="article">Simply, I am creating things that increase the information flow between people.
+            Also I am designing cool and unique user interfaces and experiences that people use for this purpose.</p>
+            <div class="image-set">
+              <img src="./public/images/steve-jobs-gercekligi-bukun.jpg" class="" alt="Nevertheless">
+              <p>Break the reality -sigh- simply.</p>
+            </div>
+            <p class="article">How? I am a software engineer/architect. I build web applications. They are all my own ideas and projects. If there is something I don't like, I invent my own way. Also I develop frameworks and tools if I need.</p>
+            <h3>Who I do it for?</h3>
+            <p class="article">For humanity. No limit. No niche. For THE HUMAN CIVILISATION.</p>
+            <h3>What problem I solve?</h3>
+            <p class="article">Clear. There is no way to acquire pure and true knowledge from web. Enormous information on the Internet, and much more on the world in real life. So something must be there to make it useful, meaningful and purify from outside effects.</p>
+            <p class="article">Even further, there is not a tool for social knowledge. Name it a meaningful, privacy-centered, knowledge-oriented social network for people who use it to catch the recent and for a narrow community.</p>
+            <p class="article">In a nutshell, information seems ugly now. A word for nerds, cut-throats and evil. But knowledge is a part of human-being.
+            We have emotions, moods, social feelings about each other.
+            And I believe that there should be a way to combine these two powers of human nature :<br> <strong>Knowledge and Feelings</strong>.</p>
+          </section>
+          <section>
+            <h2>My Values</h2>
+            <div class="image-set">
+              <img src="./public/images/marka-pusulasi-nedir.jpg" class="" alt="My compass that directs me to the right way.">
+              <p>My compass that directs me to the right way.</p>
+            </div>
+            <h3>My Principles</h3>
+            <ol type="1">
+              <li>
+                <h4>Openness</h4>
+                <p class="article">I believe that the knowledge should be open to everyone.</p>
+              </li>
+              <li>
+                <h4>Openness</h4>
+                <p class="article">I believe that the knowledge should be open to everyone.</p>
+              </li>
+            </ol>
+            <h3>My Attitude</h3>
+            <ol type="1">
+              <li>
+                <h4>Openness</h4>
+                <p class="article">I believe that the knowledge should be open to everyone.</p>
+              </li>
+            </ol>
+            <h3>My Goals</h3>
+            <ol type="1">
+              <li>
+                <h4>Openness</h4>
+                <p class="article">I believe that the knowledge should be open to everyone.</p>
+              </li>
+            </ol>
+          </section>
+          <section>
+            <h2>Why you should follow me?</h2>
+            <div class="image-set">
+              <img src="./public/images/farklı-dusun-fark-yarat.jpg" class="" alt="Blogging is awesome!">
+              <p>Blogging is awesome!</p>
+            </div>
+            <p class="article">I told about the openness principle. So I also will be blogging here. All the experience I get on the way will be here.
+              On this goal, I founded Dorkodu, and I am writing my experiences on business, startups, creating a brand, software engineering, interesting stuff that I learn by surfing and living.</p>
+          </section>
+        </article>
+        <div class="set">
+          <div class="banner hire-me">
+            <p><span class="neu-promo">$$$</span>INTERESTED IN THIS <strong>REVOLUTIONARY WORK</strong> ?</p><a href="#" class="green-button">HIRE ME</a>
+          </div>
+        </div>
+      </div>
+		</div>
+    {footer.pagelet}
+  </div>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<article class="set">
+  <h1 class="motto">I am creating things that maintain, gather and improve human knowledge to make it meaningful and reachable for both humans and computers.</h1>
+  <section>
+    <div class="person-set">
+      <img src="./images/neo.gif" alt="">
+      <div class="person-set-content">
+        <h4>Doruk Dorkodu</h4>
+        <p>I am a big picture thinker. I like to connect the dots and find paths to humanity's problems. I do this by designing and inventing new, creating products that matter.</p>
+      </div>
+    </div>
+    <blockquote>
+      <i class="icon dw-note-4"></i><p>Where the code comes from poetry...</p>
+    </blockquote>
+  </section>
+  <section>
+    <h2>The Story of a Founder</h2>
+    <h3>My story begins</h3>
+    <div class="image-set">
+      <img src="./images/IMG-20191116-WA0010.jpg" class="" alt="A deck of dollars in a human hand.">
+      <p>A deck of dollars in a human hand.</p>
+    </div>
+    <p class="article">When I was a little child -around 7-8 years old- I started to -realize the world around me- read history books, encyclopedias etc. And when I learnt that as Turks we have a long history of nation, and ruled the world; I wondered why we are <strong>NOT rich, powerful, famous, exclusive or NOT doing something BIG, or even NOT full of cheers.</strong> And I had no idea how things will be tomorrow...</p>
+    <p class="article">A long time after, at secondary school, I learnt that history or art wasn't everything. And being always dreaming to be an inventor, I saw the future </strong>-where the world of west have already started gathering the fruits-</strong> : <strong>Computers and Software.</strong></p>
+    <p class="article">At the age of 12, I started programming with just one goal in mind. <strong>Changing the world one day.</strong><br> I always know one day changing the world, with whatever the price I have to pay. The code looked more than a set of mighty words. <strong>It was the real poetry.</strong> It was art. It had a culture. <strong>There was a purpose, meaning and mission to make the great.</strong> So I loved it! </p>
+    <h3>My Change Moment</h3>
+    <div class="image-set">
+      <img src="./images/tedxvefa-bina.jpg" class="" alt="Vefa Lisesi">
+      <p>Vefa Lisesi</p>
+    </div>
+    <p class="article">My life changed when I was a prep student at the <strong>Vefa Lisesi</strong>, one of the best high schools with art, culture, liberal arts education, and of course science. I was wanted to create a web site for TEDxVefaLisesi.
+      I had a quick start with learning web development.</p>
+    <p class="article">The actual chance was this. You write the code and give it a go. <strong>Then everyone can use what you have built. Whenever, Wherever, Whatever they would like.</strong> Now I could design the UI how I want, there was no limit. Mobile or desktop, which functionality I want, whatever it is...</p>
+    <h3>My Eureka! Moment</h3>
+    <div class="image-set">
+      <img src="./images/dorkodu-banner.png" class="" alt="Dorkodu logo with our motto">
+      <p>Dorkodu logo with our motto</p>
+    </div>
+    <p class="article">Yes, Internet is cool, exclusive, fun and a better life opportunity. But things have changed when I realized about Web 3.0 and digged deeper in Web programming. Do we really get the true information from it? <strong>NO. All we get is some pages that others created.</strong> There is no certainity on the info we find. This was a shame for Internet.</p>
+    <p class="article">Eureka! Consider it this way; if we have a search engine that <strong>we only get the true, meaningful and usable knowledge</strong> -not info- what would change? <strong>EVERYTHING.</strong> I don't mean results of web pages, <strong>little knowledge pieces that just contains true and pure knowledge and it's meta info.</strong>  Cool, isn't it?</p>
+    <p class="article">This is how <a href="#">the Dorkodu Project</a> and my new life with a passion started.</p>
+  </section>
+  <section>
+    <h2>Who I am - by Questions</h2>
+    <h3>What do I do?</h3>
+    <p class="article">Simply, I am creating things that increase the information flow between people.
+    Also I am designing cool and unique user interfaces and experiences that people use for this purpose.</p>
+    <div class="image-set">
+      <img src="./images/steve-jobs-gercekligi-bukun.jpg" class="" alt="Nevertheless">
+      <p>Break the reality -sigh- simply.</p>
+    </div>
+    <p class="article">How? I am a software engineer/architect. Now I build web applications. Most of them my own ideas and projects. If not, that means there is something that I don't like it, and develop it my own. Also I develop -invent- frameworks, tools, side systems if there is need.</p>
+    <h3>Who I do it for?</h3>
+    <p class="article">For humanity. No limit. No niche. THE HUMANITY.</p>
+    <h3>What problem I solve?</h3>
+    <p class="article">Clear. There is not a tool for acquiring pure and true knowledge. Enormous information on the Internet, and much more on the world in real life. So something must be there to make it useful, meaningful and purify from outside effects.</p>
+    <p class="article">Even further, there is not a tool for social knowledge. Name it a meaningful, privacy-centered, knowledge-oriented social network for people who use it to catch the recent and for a narrow community.</p>
+    <p class="article">In a nutshell, information seems ugly now. A word for nerds, cut-throats and . But knowledge is a part of human.
+    Not robots, machines. We have emotions, moods, social feelings about each other.
+    And I believe that there should be a way to combine these two powers of human nature :<br> <strong>Knowledge and Feelings</strong>.</p>
+  </section>
+  <section>
+    <h2>My Values</h2>
+    <div class="image-set">
+      <img src="./images/marka-pusulasi-nedir.jpg" class="" alt="My compass that directs me to the right way.">
+      <p>My compass that directs me to the right way.</p>
+    </div>
+    <h3>My Principles</h3>
+    <ol type="1">
+      <li>
+        <h4>Openness</h4>
+        <p class="article">I believe that the knowledge should be open to everyone.</p>
+      </li>
+      <li>
+        <h4>Openness</h4>
+        <p class="article">I believe that the knowledge should be open to everyone.</p>
+      </li>
+    </ol>
+    <h3>My Attitude</h3>
+    <ol type="1">
+      <li>
+        <h4>Openness</h4>
+        <p class="article">I believe that the knowledge should be open to everyone.</p>
+      </li>
+    </ol>
+    <h3>My Goals</h3>
+    <ol type="1">
+      <li>
+        <h4>Openness</h4>
+        <p class="article">I believe that the knowledge should be open to everyone.</p>
+      </li>
+    </ol>
+  </section>
+  <section>
+    <h2>Why you should follow me?</h2>
+    <div class="image-set">
+      <img src="./images/farklı-dusun-fark-yarat.jpg" class="" alt="Blogging is awesome!">
+      <p>Blogging is awesome!</p>
+    </div>
+    <p class="article">I told about the openness principle. So I also will be blogging here. All the experience I get on the way will be here.
+      On this goal, I founded Dorkodu, and I am writing my experiences on business, startups, creating a brand, software engineering, interesting stuff that I learn by surfing and living.</p>
+  </section>
+</article>
