@@ -17,8 +17,13 @@
 
     public function url()
     {
-      $currentPath = $this->path();
-      return $url = $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+      /*
+        $currentPath = $this->path();
+        return $url = $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+      */
+      $host = $_SERVER['HTTP_HOST'];
+      $protocol = $this->isHttps() ? 'https' : 'http';
+      return $protocol."://".$host.$this->path();
     }
 
     public function method()
@@ -33,7 +38,11 @@
       } else return false;
     }
 
+    public function webServerRoot()
+    {
+      return str_replace($_SERVER['SCRIPT_NAME'], '', $_SERVER['SCRIPT_FILENAME']);
+    }
   }
   
   $request = new Request();
-  echo $request->isHttps();
+  echo $request->url();
