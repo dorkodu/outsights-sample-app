@@ -55,12 +55,12 @@
           }
           return $headers;
         };
-        
       } else {
-        # code...
+        $getAllHeaders = getallheaders();
       }
-      
-      $httpRequest = getallheaders();
+
+
+      $httpRequest = $getAllHeaders();
       
       foreach ($httpRequest as $header => $value) {
         echo "<br>".$header." : ".$value;

@@ -2,7 +2,7 @@
     "knotted": {
         "classmap": [],
         "namespaces": {
-          "Outsights": "outsights/"
+          "Outsights": "."
         }
     }
 }
