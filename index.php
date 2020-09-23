@@ -42,7 +42,30 @@
     {
       return str_replace($_SERVER['SCRIPT_NAME'], '', $_SERVER['SCRIPT_FILENAME']);
     }
+
+    public function echoHTTPRequest()
+    {
+      if (!function_exists("getallheaders")) {
+        $getAllHeaders = function () {
+          $headers = array();
+          foreach ($_SERVER as $name => $value) {
+            if (substr($name, 0, 5) == "HTTP_") {
+              $headers[str_replace(' ', '_', ucwords(strtolower((str_replace('_', ' ', substr($name, 5))))))] = $value;
+            }
+          }
+          return $headers;
+        };
+      } else {
+        # code...
+      }
+      
+      $httpRequest = getallheaders();
+      
+      foreach ($httpRequest as $header => $value) {
+        echo "<br>".$header." : ".$value;
+      }
+    }
   }
   
   $request = new Request();
-  echo $request->url();
+  echo $request->echoHTTPRequest();
