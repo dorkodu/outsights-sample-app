@@ -39,13 +39,13 @@
     }
 
     # returns the current Route object
-    public static function current(string $routeUrl, string $staticPageName)
+    public static function current()
     {
 
     }
       
     # routes to the previous route, which is saved.
-    public static function back(string $routeUrl, string $staticPageName)
+    public static function back()
     {
       
     }

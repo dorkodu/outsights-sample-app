@@ -73,7 +73,11 @@
      **/
     public function getFromQuery($name)
     {
-      
+      if (isset($_GET)) {
+        if (isset($_GET[$name])) {
+          return $_GET[$name];
+        } else return null;  
+      } else return null;
     }
 
     /**
