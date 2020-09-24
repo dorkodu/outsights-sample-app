@@ -1,9 +1,11 @@
 <?php
-  namespace Outsights\Router;
+  namespace Outsights\Route;
 
-  class Router
+  use Outsights\OdEngine\Od;
+
+  class Route
   {
-    public static function parseUrl()
+    public static function parseURL()
     {
       $dirName = dirname($_SERVER['SCRIPT_NAME']);
       $baseName = basename($_SERVER['SCRIPT_NAME']);
@@ -13,7 +15,7 @@
     # routes to the given URL
     public static function run(string $routeUrl, $routeAction, string $acceptedHTTPVerbs = "GET")
     {
-      $requestUri = self::parseUrl();
+      $requestUri = self::parseURL();
       if (preg_match('@^'.$requestUri.'$@', $routeUrl, $parsedDataFromUri)) {
         if (is_callable($routeAction))
           call_user_func_array($routeAction, $parsedDataFromUri);
@@ -32,10 +34,13 @@
       
     }
 
-    # serves a static page for the given URL
-    public static function redirect(string $routeUrl, string $staticPageName)
+    # redirects to the route
+    public static function redirect(string $from, string $to)
     {
-      
+      $requestURI = self::parseURL();
+      if (preg_match('@^'.$requestURI.'$@', $from, $parsedDataFromUri)) {
+        Router::run($routeURL);
+      }
     }
 
     # returns the current Route object

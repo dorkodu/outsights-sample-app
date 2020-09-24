@@ -8,11 +8,11 @@
   class Cookie
   {
     /**
-     * Undocumented function.
+     * Gets the cookie.
      *
-     * @param  $ description.
+     * @param string $name
      *
-     * @return type
+     * @return string value of the cookie
      **/
     public static function get(string $name)
     {

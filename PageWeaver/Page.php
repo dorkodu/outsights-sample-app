@@ -1,6 +1,7 @@
 <?php
-	namespace Outsights\OutsightsTemplateEngine;
-	use Outsights\OutsightsTemplateEngine\Pagelet as Pagelet;
+  namespace Outsights\PageWeaver;
+  
+	use Outsights\PageWeaver\Pagelet;
 
 	class Page {
 

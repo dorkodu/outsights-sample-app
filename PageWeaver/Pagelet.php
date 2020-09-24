@@ -1,30 +1,20 @@
 <?php
-	namespace Outsights\OutsightsTemplateEngine;
+	namespace Outsights\PageWeaver;
 
 	class Pagelet {
-		protected $pageletName;
-		protected $pageletLocation;
+		protected $name;
 		protected $content;
 
-		public function __construct() {
-
+		public function __construct(string $name) {
+      $this->name = $name;
 		}
 
-		public function getPageletName() {
-			if(empty($this->pageletName))
-				return false;
-			else
-				return $this->pageletName;
+		public function getName() {
+      return $this->name;
 		}
 
-		public function setPageletName($pName) {
-			if(empty($pName))
-				return false;
-			else {
-				$this->pageletName = $pName;
-				$this->pageletLocation = OTE_DIR."/pagelets/".strtolower($this->pageletName).'.pagelet';
-			}
-
+		public function setName(string $name) {
+      $this->pageletName = $name;
 		}
 
 		public function isPageletExists() {
