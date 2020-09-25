@@ -1,13 +1,18 @@
 <?php
   namespace Outsights\PageWeaver;
-  
+
+  use Outsights\Outstor\FileStorage;
+  use Outsights\PageWeaver\Page;
+
   /**
    * A minimalist Template Engine for Outsights ecosystem
    */
   class PageWeaver
   {
+    protected const STATIC_PAGE_DIR = "static-pages/";
+
     /**
-     * Checks for if a page exists.
+     * Checks whether a page exists.
      *
      * @param string $pageName.
      *
@@ -15,7 +20,8 @@
      **/
     public static function pageExists(string $pageName)
     {
-      
+      $tempPage = new Page($pageName);
+      return $tempPage->isUseful();
     }
 
     /**
@@ -26,9 +32,9 @@
      *
      * @return boolean true on success, false on failure
      **/
-    public function render(string $pageContents, array $data)
+    public static function render(string $pageContents)
     {
-      # code...
+      echo $pageContents;
     }
 
     /**
@@ -40,9 +46,14 @@
      * @return string Composed page contents on, success
      * @return false on failure
      **/
-    public function composePage(string $pageName, array $data)
+    public static function composePage(string $pageName, array $data)
     {
-      # code...
+      $page = new Page($pageName);
+      if($page->retrieve() !== false) {
+        $page->seedPagelets();
+        $page->seedData($data);
+        return $page->getContents();
+      } else return false;
     }
 
     /**
@@ -53,9 +64,33 @@
      * @return string Composed page contents on, success
      * @return false on failure
      **/
-    public function composeStaticPage(string $pageName)
+    public static function composeStaticPage(string $pageName)
     {
-      
+      $staticPagePath = self::STATIC_PAGE_DIR.$pageName.".html";
+      if (self::staticPageExists($pageName)) {
+        $contents = FileStorage::getFileContents($staticPagePath);
+        if ($contents !== false) {
+          return $contents;
+        } else return false; # cannot read the file
+      } else return false; # static file is not useful
+    }
+
+    /**
+     * Checks if a particular static page exists.
+     *
+     * @param string $pageName
+     *
+     * @return boolean true on success, false on failure
+     **/
+    public static function staticPageExists($pageName)
+    {
+      if (preg_match("/([a-zA-Z0-9-_]+)/", $pageName)) {
+        if (FileStorage::isUsefulDirectory(self::STATIC_PAGE_DIR)) {
+          $staticPagePath = self::STATIC_PAGE_DIR.$pageName.".html";
+          if (FileStorage::isUsefulFile($staticPagePath)) {
+            return true;
+          } else return false; # static file is not useful
+        } else return false; # static file directory is not useful
+      } else return false; # page name breaches the rule
     }
   }
-  

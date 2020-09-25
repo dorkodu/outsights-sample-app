@@ -5,45 +5,75 @@
 
   class Route
   {
-    public static function parseURL()
+    /**
+     * Parses and returns the Request URI
+     *
+     * @return string URI for the current Request
+     */
+    private static function parseURI()
     {
       $dirName = dirname($_SERVER['SCRIPT_NAME']);
       $baseName = basename($_SERVER['SCRIPT_NAME']);
       return str_replace([$dirName, $baseName], null, $_SERVER['REQUEST_URI']);
     }
 
-    # routes to the given URL
-    public static function run(string $routeUrl, $routeAction, string $acceptedHTTPVerbs = "GET")
+    /**
+     * Runs the Outsights Router
+     *
+     * @param string $routeURL
+     * @param mixed $routeAction
+     * @param string $acceptedHTTPVerbs Pattern : 'GET|POST|PATCH...' or 'GET' for single option
+     * 
+     * @return void
+     */
+    public static function run(string $routeURL, $routeAction, string $acceptedHTTPVerbs = "GET")
     {
-      $requestUri = self::parseURL();
-      if (preg_match('@^'.$requestUri.'$@', $routeUrl, $parsedDataFromUri)) {
+      $requestURI = self::parseURI();
+      if (preg_match('@^'.$requestURI.'$@', $routeURL, $parsedDataFromURI)) {
         if (is_callable($routeAction))
-          call_user_func_array($routeAction, $parsedDataFromUri);
+          call_user_func_array($routeAction, $parsedDataFromURI);
         else {
           if (is_string($routeAction)) {
             list($routeMethod, $routeController) = explode('@', $routeAction);
-            call_user_func_array([new $routeController, $routeMethod], $parsedDataFromUri);
+            call_user_func_array([new $routeController, $routeMethod], $parsedDataFromURI);
           } # else invalid route action.            
         }
       }
     }
 
-    # serves a static page for the given URL
-    public static function staticPage(string $routeUrl, string $staticPageName)
+    /**
+     * Serves a static page for the given URL
+     * 
+     * @param string $routeURL
+     * @param string $staticPageName
+     * 
+     * @return void
+     */ 
+    public static function staticPage(string $routeURL, string $staticPageName)
     {
       
     }
 
-    # redirects to the route
+    /**
+     * Redirects the current route
+     *
+     * @param string $from
+     * @param string $to
+     * @return void
+     */
     public static function redirect(string $from, string $to)
     {
-      $requestURI = self::parseURL();
+      $requestURI = self::parseURI();
       if (preg_match('@^'.$requestURI.'$@', $from, $parsedDataFromUri)) {
-        Router::run($routeURL);
+        Route::run($from);
       }
     }
 
-    # returns the current Route object
+    /**
+     * 
+     *
+     * @return void
+     */
     public static function current()
     {
 
