@@ -10,7 +10,7 @@
   class PageWeaver
   {
     protected const STATIC_PAGE_DIR = "static-pages/";
-
+    
     /**
      * Checks whether a page exists.
      *
@@ -34,7 +34,9 @@
      **/
     public static function render(string $pageContents)
     {
+      ob_start();
       echo $pageContents;
+      ob_end_flush();
     }
 
     /**

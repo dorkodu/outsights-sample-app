@@ -3,6 +3,12 @@
   /*
     require_once 'outsights/bootstrap.php';
   */
-  $text = "article";
 
+  use Outsights\PageWeaver\PageWeaver;
+
+  $pw = new PageWeaver();
+  $pageContent = $pw->composeStaticPage("about");
+  var_dump($pageContent);
+  # $pw->render($pw->composeStaticPage("about"));
+  
   

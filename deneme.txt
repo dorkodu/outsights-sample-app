@@ -1,0 +1,75 @@
+Fuck youarray(10) {
+  ["_GET"]=>
+  array(0) {
+  }
+  ["_POST"]=>
+  array(0) {
+  }
+  ["_COOKIE"]=>
+  array(0) {
+  }
+  ["_FILES"]=>
+  array(0) {
+  }
+  ["GLOBALS"]=>
+  array(10) {
+    ["_GET"]=>
+    array(0) {
+    }
+    ["_POST"]=>
+    array(0) {
+    }
+    ["_COOKIE"]=>
+    array(0) {
+    }
+    ["_FILES"]=>
+    array(0) {
+    }
+    ["GLOBALS"]=>
+    *RECURSION*
+    ["text"]=>
+    string(7) "article"
+    ["universalNamespaces"]=>
+    array(1) {
+      ["Outsights"]=>
+      string(1) "."
+    }
+    ["psr4Autoloader"]=>
+    object(Psr4Autoloader)#1 (1) {
+      ["prefixes":protected]=>
+      array(1) {
+        ["Outsights\"]=>
+        array(1) {
+          [0]=>
+          string(2) "./"
+        }
+      }
+    }
+    ["path"]=>
+    string(1) "."
+    ["namespace"]=>
+    string(9) "Outsights"
+  }
+  ["text"]=>
+  string(7) "article"
+  ["universalNamespaces"]=>
+  array(1) {
+    ["Outsights"]=>
+    string(1) "."
+  }
+  ["psr4Autoloader"]=>
+  object(Psr4Autoloader)#1 (1) {
+    ["prefixes":protected]=>
+    array(1) {
+      ["Outsights\"]=>
+      array(1) {
+        [0]=>
+        string(2) "./"
+      }
+    }
+  }
+  ["path"]=>
+  string(1) "."
+  ["namespace"]=>
+  string(9) "Outsights"
+}
