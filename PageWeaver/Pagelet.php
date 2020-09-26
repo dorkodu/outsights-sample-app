@@ -6,7 +6,14 @@
 
   class Pagelet extends AbstractPage {
 
-    private const PAGELETS_DIR = "pagelets/";
+    private const PAGELETS_DIR = "PageWeaver/pagelets/";
+
+    public function __construct(string $name) {
+      if (preg_match(self::NAME_PATTERN, $name)) {
+        $this->name = $name;
+        $this->setPathByName($name);
+      }
+		}
 
     public function setPathByName($name)
     {

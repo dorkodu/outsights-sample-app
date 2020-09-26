@@ -9,15 +9,17 @@
   abstract class AbstractPage
   {
     protected const NAME_PATTERN = "/([a-zA-Z0-9-_]+)/";
-    protected $name = "";
-    protected $path = "";
-		protected $contents = "";
+    protected $name;
+    protected $path;
+		protected $contents;
     
-    public function getName() {
+    public function getName()
+    {
       return $this->name;
 		}
 
-		public function getContents() {
+    public function getContents()
+    {
       return $this->contents;
     }
     
@@ -42,7 +44,8 @@
       } else return false;
     }
 
-		public function setName($name) {
+    public function setName($name)
+    {
       if (preg_match(self::NAME_PATTERN, $name)) {
         $this->name = $name;
         $this->setPathByName($name);
@@ -67,15 +70,15 @@
      *
      * @return boolean true on success, false on failure
      */
-		protected function readContents() {
+    protected function readContents()
+    {
 			if($this->isUseful()) {
-				$result = FileStorage::getFileContents($this->path);
-        if (!$result) {
+				$result = FileStorage::getContents($this->path);
+        if ($result === false) {
           return false;
         } else {
           $this->contents = $result;
-          unset($result);
-          return true;
+          return true; # success kid
         }
 			} else return false; # file not useful
     }
@@ -87,12 +90,13 @@
      * @return false on failure
      * 
      */
-		public function retrieve() {
-			if($this->isNameSuitable() && $this->isUseful()) {
-				if($this->readContents()) {
-					return $this->content;       
-        } else return false;
-			} else return false; # no proper name
+    public function retrieve()
+    {
+      if ($this->isUseful()) {
+        if($this->readContents()) {
+          return $this->contents;
+        } else return false;  
+      } else return false;
 		}
   }
   

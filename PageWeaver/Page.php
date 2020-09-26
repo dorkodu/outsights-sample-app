@@ -5,9 +5,10 @@
   use Outsights\PageWeaver\Pagelet;
   use Outsights\Outstor\FileStorage;
 
-	class Page extends AbstractPage {
+  class Page extends AbstractPage
+  {
 
-    private const PAGES_DIR = "pages/";
+    private const PAGES_DIR = "PageWeaver/pages/";
     private const PAGELET_PLACEHOLDER_PATTERN = "/{([a-zA-Z0-9-_]+).pagelet}/";
 
 		public function __construct(string $name) {
@@ -21,10 +22,10 @@
     {
       $this->path = self::PAGES_DIR.$this->name.".page";
     }
-    
+
     /**
      * Replaces placeholders with given data
-     * 
+     *
      * @param array $placeholders
      * @return void
      */
@@ -40,15 +41,15 @@
      * @return boolean
      */
 		protected function isThereAnyPagelets() {
-      if(!empty($this->content)) {
-        $result = preg_match(self::PAGELET_PLACEHOLDER_PATTERN, $this->content);
+      if(!empty($this->contents)) {
+        $result = preg_match(self::PAGELET_PLACEHOLDER_PATTERN, $this->contents);
         switch ($result) {
           case 1:
             return true;
           default:
             return false;
             break;
-        }  
+        }
       } else return false;
 		}
 
@@ -59,15 +60,23 @@
      */
 		public function seedPagelets() {
 			while($this->isThereAnyPagelets()) {
-				preg_match_all(self::PAGELET_PLACEHOLDER_PATTERN, $this->content, $results);
-				$tokensArray = $results[0];
-				unset($results);
-				foreach($tokensArray as $token) {
+				preg_match_all(self::PAGELET_PLACEHOLDER_PATTERN, $this->contents, $resultsToken);
+        $tokensArray = $resultsToken[0];
+
+        foreach($tokensArray as $token) {
 					preg_match_all(self::PAGELET_PLACEHOLDER_PATTERN, $token, $results);
-					$pagelet = new Pagelet($results[1][0]);
-					unset($results);
-					$this->content = str_replace($token, $pagelet->retrieve(), $this->content);
-				}
+          
+          $pageletName = $results[1][0];
+
+          $pagelet = new Pagelet($pageletName);
+          $pageletContents = $pagelet->retrieve();
+
+          $this->contents = str_replace($token, $pageletContents, $this->contents);
+          
+          unset($pageletContents);
+          unset($pageletName);
+          unset($pagelet);
+        }
       }
 		}
 	}

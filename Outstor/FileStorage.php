@@ -88,7 +88,7 @@
      * @return string entire content of the file
      * @return false on failure
      **/
-    public static function getFileContents($filePath)
+    public static function getContents($filePath)
     {
       if (self::isUsefulFile($filePath)) {
         return file_get_contents($filePath);
@@ -103,7 +103,7 @@
      * 
      * @return boolean true on success, false on failure
      **/
-    public static function putFileContents($filePath, $content)
+    public static function putContents($filePath, $content)
     {
       if (self::isUsefulFile($filePath)) {
         return is_int(file_put_contents($filePath, $content));

@@ -9,8 +9,8 @@
    */
   class PageWeaver
   {
-    protected const STATIC_PAGE_DIR = "static-pages/";
-    
+    protected const STATIC_PAGE_DIR = "PageWeaver/static-pages/";
+
     /**
      * Checks whether a page exists.
      *
@@ -51,7 +51,7 @@
     public static function composePage(string $pageName, array $data)
     {
       $page = new Page($pageName);
-      if($page->retrieve() !== false) {
+      if($page->retrieve() != false) {
         $page->seedPagelets();
         $page->seedData($data);
         return $page->getContents();
@@ -70,7 +70,7 @@
     {
       $staticPagePath = self::STATIC_PAGE_DIR.$pageName.".html";
       if (self::staticPageExists($pageName)) {
-        $contents = FileStorage::getFileContents($staticPagePath);
+        $contents = FileStorage::getContents($staticPagePath);
         if ($contents !== false) {
           return $contents;
         } else return false; # cannot read the file
