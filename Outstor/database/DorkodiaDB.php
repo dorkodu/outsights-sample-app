@@ -1,6 +1,4 @@
 <?php
-	require_once "db.interface.php";
-	require_once "mysql.class.php";
 
 	class DorkodiaDB implements DBInterface {
 

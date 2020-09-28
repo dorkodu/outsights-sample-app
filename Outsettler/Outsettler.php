@@ -12,14 +12,14 @@
 
     private $currentEnvironment;
     
-    public const STORE_PATH = "Outsettler/store/";
-    public const DEFAULT_ENVIRONMENT = "default";
+    public const STORE_PATH = "Outsights/Outsettler/store/";
+    public const DEFAULT_ENVIRONMENT = "*";
 
-    private $settings = array();
+    public $settings = array();
 
     public function __construct()
     {
-      $this->currentEnvironment = "DEFAULT";
+      $this->currentEnvironment = self::DEFAULT_ENVIRONMENT;
       $this->resetEnvironment();
     }
 
@@ -28,13 +28,13 @@
      *
      * @param string $key
      * 
-     * @return mixed value for the key
+     * @return string value for the key
      * @return null if couldn't get a key
      */
     public function get(string $key)
     {
-      if (!empty($key) && !empty($this->settings[$this->currentEnvironment]) && !empty($this->settings[$this->currentEnvironment][$key])) {
-        return $this->settings[$this->environment][$key];
+      if (!empty($key)) {
+        return $this->settings[$this->currentEnvironment][$key];
       } else return null;
     }
 
@@ -77,12 +77,11 @@
     public function saveEnvironment()
     {
       $environmentSettings = $this->generateEnvironmentSettingsArray();
-      $environmentFilePath = self::STORE_PATH . mb_strtolower($this->currentEnvironment, "utf-8") . ".json";
+      $environmentFilePath = self::STORE_PATH . $this->currentEnvironment . ".json";
       
       $environmentJson = new JsonFile($environmentFilePath);
-      if(!$environmentJson->write($environmentSettings, true)) {
-        return false;
-      } else return true;
+
+      return (!$environmentJson->write($environmentSettings, true)) ? false : true;
     }
 
     /**
@@ -92,17 +91,17 @@
      */
     public function resetEnvironment()
     {
-      $this->settings[$this->currentEnvironment] = array();
+      unset($this->settings[$this->currentEnvironment]);
     }
 
     /**
-     * Refreshes the current environment from file storage
+     * Refreshes the current environment from stored JSON file
      *
      * @return void
      */
     public function refreshEnvironment()
     {
-      $environmentFilePath = self::STORE_PATH . mb_strtolower($this->currentEnvironment, "utf-8") . ".json";
+      $environmentFilePath = self::STORE_PATH . $this->currentEnvironment . ".json";
       $environmentJson = new JsonFile($environmentFilePath);
 
       if($environmentJson->isUseful()) {
@@ -111,7 +110,10 @@
         if ($parsedSettings === false) {
           $this->resetEnvironment();
         } else {
-          $this->settings[$this->currentEnvironment] = $parsedSettings;
+          
+          unset($this->settings[$this->currentEnvironment]);
+
+          $this->settings[$this->currentEnvironment] = $parsedSettings[$this->currentEnvironment];
         }
       } else {
         $this->resetEnvironment();
@@ -125,19 +127,16 @@
      * 
      * @return void
      */
-    public function switchEnvironment($environmentName)
+    public function switchEnvironment(string $environmentName)
     {
       if (preg_match("/^([a-zA-Z0-9_-]+)$/", $environmentName)) {
         $this->currentEnvironment = $environmentName;
-        $this->resetEnvironment();
 
-        if (!array_key_exists($this->currentEnvironment, $this->settings) || !is_array($this->settings[$this->currentEnvironment])) {
+        if (!array_key_exists($this->currentEnvironment, $this->settings)) {
           $this->refreshEnvironment();
         }
         return true;
-      } else {
-        return false;
-      }
+      } else return false;
     }
 
     /**
