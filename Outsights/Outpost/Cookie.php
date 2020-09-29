@@ -16,10 +16,10 @@
      **/
     public static function get(string $name)
     {
-      if (isset($_COOKIE[$name])) {
-        
+      if (!empty($name) && isset($_COOKIE[$name])) {
+        return $_COOKIE[$name];
       } else {
-        
+        return null;
       }
     }
 

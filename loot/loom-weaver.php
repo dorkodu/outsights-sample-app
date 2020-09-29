@@ -6,7 +6,7 @@
 
   require_once "loom/Psr4Autoloader.php";
 
-  $universalNamespaces = array('Outsights' => 'Outsights');
+  $universalNamespaces = array('Outsights' => 'outsights/Outsights');
   $psr4Autoloader = new Psr4Autoloader();
   $psr4Autoloader->register();
 
