@@ -18,10 +18,6 @@
 
     public function url()
     {
-      /*
-        $currentPath = $this->path();
-        return $url = $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
-      */
       $host = $_SERVER['HTTP_HOST'];
       $protocol = $this->isHttps() ? 'https' : 'http';
       return $protocol."://".$host.$this->path();
@@ -74,9 +70,9 @@
      *
      * @param string $name Key to look up in query
      * 
-     * @return mixed value for given key
+     * @return File file of a given input  
      **/
-    public function getCookie($name)
+    public function getFile($name)
     {
       
     }
@@ -88,8 +84,8 @@
      * 
      * @return File file of a given input  
      **/
-    public function getFile($name)
+    public function hasFile($name)
     {
-      
+
     }
   }

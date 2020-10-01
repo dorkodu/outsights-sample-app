@@ -1,9 +1,9 @@
 <?php
 
-  namespace Outsights\Outpost\Cookie;
-  
+  namespace Outsights\Outpost;
+
   /**
-   * Cookie representer class for Outsights ecosystem.
+   * Cookie controller class for Outpost HTTP library.
    */
   class Cookie
   {
@@ -24,20 +24,50 @@
     }
 
     /**
-     * Undocumented function.
+     * Creates a new cookie value object.
      *
-     * @param string $name description.
-     * @param string $value description.
-     * @param string $expiresAt description.
-     * @param string $path description.
+     * @param string $name Name of the cookie.
+     * @param string $value Value that cookie will store.
+     * @param string $expiresAt Time in seconds that the cookie will be expired at.
+     * @param string $path .
      * @param string $domain description.
      * @param boolean $httpOnly description.
      *
-     * @return type
+     * @return true on success
+     * @return false on failure
+     * 
      **/
-    public static function bake($name, $value, $expiresAt, $path, $domain, $secure, $httpOnly = false)
+    public static function bake(string $name, string $value = "", int $expiresAt = 0, string $path = "", string $domain = "", bool $secure = false, bool $httpOnly = false)
     {
-      
+      setcookie($name, $value, $expiresAt, $path, $domain, $secure, $httpOnly);
+    }
+
+    /**
+     * Expires a cookie
+     * 
+     * @param string $name Name of the cookie that you want to be expired.
+     *
+     **/
+    public static function expire(string $name)
+    {
+      setcookie($name, "", time() - 1);
+      unset($_COOKIE[$name]);
+    }
+
+    /**
+     * Returns whether a cookie exists.
+     *
+     * @param string $name Name of the cookie.
+     *
+     * @return true on success
+     * @return false on failure
+     * 
+     **/
+    public static function exists($name)
+    {
+      if (isset($_COOKIE[$name])) {
+        return true;
+      } else return false;
     }
   }
   

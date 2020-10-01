@@ -76,4 +76,32 @@
         return hash_file($algo, $filePath);
       } else return false; # if not a string
     }
+
+
+    public static function shuffleString($mainString, $keyLength) {
+			$randStr = str_shuffle($mainString);
+			return substr($randStr, 0, $keyLength);
+		}
+
+		public static function generateUniqid($startingString = "") {
+			return uniqid($startingString, true);
+		}
+
+		public function generateUniqToken($length, $technique = "") {
+			switch($technique) {
+			   case "RANDOM_BYTES":
+					 if(function_exists('random_bytes'))
+						 $bespokeKey = bin2hex(random_bytes($length)); //uuh, cool words!
+				 	 else
+						 $bespokeKey = $this->generateUniqid();
+					break;
+			   case "UNIQID_WAY":
+					$bespokeKey = $this->generateUniqid(); //uuh, cool words!
+					break;
+				case NULL:
+				return false;
+			}
+			return $bespokeKey;
+		}
+
   }

@@ -12,7 +12,7 @@
 
     private $currentEnvironment;
     
-    public const STORE_PATH = "Outsights/Outsettler/store/";
+    public const STORE_PATH = "./outsights/resources/settings/";
     public const DEFAULT_ENVIRONMENT = "*";
 
     public $settings = array();

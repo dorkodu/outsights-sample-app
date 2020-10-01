@@ -23,7 +23,24 @@
 			if(file_exists($path) && is_readable($path) && is_writable($path)) {
 				return true;
 			} else return false;
-		}
+    }
+    
+    /**
+     * Makes a file system node useful by changing the permissions, or creating if doesn't exists.
+     *
+     * @param string $path Path to the file or directory.
+     *
+     * @return boolean true on success, false on failure
+     * @return false if the given node doesn't exist
+     **/
+    public static function makeUseful(string $path)
+    {
+      if (file_exists($path)) {
+        return chmod($path, 0666);
+      } else {
+        return false;
+      }
+    }
 		
 		/**
 		 * @return boolean

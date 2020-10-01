@@ -17,5 +17,25 @@
       }
       return $headers;
     }
+
+    /**
+     * Returns the user IP from request
+     *
+     * @return string the client IP
+     */
+    public function IP() {
+			if(getenv('HTTP_CLIENT_IP')) {
+				$ip = getenv('HTTP_CLIENT_IP');
+			} elseif(getenv('HTTP_X_FORWARDED_FOR')) {
+				$ip = getenv('HTTP_X_FORWARDED_FOR');
+				if(strstr($ip, ',')) {
+					$temp = explode(',',$ip);
+					$ip = trim($temp[0]);
+				}
+			} else {
+				$ip = getenv('REMOTE_ADDR');
+			}
+			return $ip;
+		}
   }
   

@@ -4,3 +4,5 @@ PageWeaver/static-pages/
 PageWeaver/pages/
 PageWeaver/pagelets/
 Outstor/storage
+resources/locale/en.php
+resources/locale/tr.php
