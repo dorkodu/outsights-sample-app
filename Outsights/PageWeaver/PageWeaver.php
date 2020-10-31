@@ -9,7 +9,7 @@
    */
   class PageWeaver
   {
-    protected const STATIC_PAGE_DIR = "PageWeaver/static-pages/";
+    protected const STATIC_PAGE_DIR = "outsights/resources/pageweaver/static-pages";
 
     /**
      * Checks whether a page exists.

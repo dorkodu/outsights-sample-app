@@ -1,5 +1,4 @@
 <?php
   declare(strict_types=1);
   
-  require_once "loot/loom-weaver.php";
-  
+  require_once "loot/loom-weaver.php";  

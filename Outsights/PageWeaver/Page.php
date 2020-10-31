@@ -7,8 +7,7 @@
 
   class Page extends AbstractPage
   {
-
-    private const PAGES_DIR = "PageWeaver/pages/";
+    private const PAGES_DIR = "outsights/resources/pageweaver/pages";
     private const PAGELET_PLACEHOLDER_PATTERN = "/{([a-zA-Z0-9-_]+).pagelet}/";
 
 		public function __construct(string $name) {

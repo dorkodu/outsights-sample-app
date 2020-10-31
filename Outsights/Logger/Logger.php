@@ -1,11 +1,11 @@
 <?php
 
-  namespace Outsights\Shepherd;
+  namespace Outsights\Logger;
 
   /**
-   * Shepherd logging library for Outsights ecosystem.
+   * a simple Logging library for Outsights ecosystem.
    */
-  class Shepherd
+  class Logger
   {
     public const EMERGENCY = 1;
     public const ALERT = 2;
@@ -77,7 +77,7 @@
             
           $document = fopen($logFilePath, "ab+");
 
-          $logEntryContent = "[".date("Y-m-d H:i:s")."] ".$importanceTitle." ".$content." \n";
+          $logEntryContent = "[".date("Y-m-d H:i:s")."] ".$importanceTitle." ".$content."\n";
           
           fputs($document, $logEntryContent);
           fclose($document);
