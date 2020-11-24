@@ -8,11 +8,11 @@
   {  
     private $name;
     private $value;
-    private $expiresAt;
-    private $path;
-    private $secure;
+    private $expiresAt = 0;
+    private $path = "/";
+    private $isSecureOnly = false;
     private $domain;
-    private $httpOnly;
+    private $httpOnly = false;
   
     /**
      * Creates a new cookie value object.
@@ -20,19 +20,19 @@
      * @param string $name Name of the cookie.
      * @param string $value Value that cookie will store.
      * @param string $expiresAt Time in seconds that the cookie will be expired at.
-     * @param string $path .
-     * @param string $path .
-     * @param string $domain description.
-     * @param boolean $httpOnly description.
+     * @param string $path The path of the URI
+     * @param boolean $isSecureOnly Tells if this cookie will be available only under secure HTTP - SSL
+     * @param string $domain The domain of the URI
+     * @param boolean $httpOnly Tells if this cookie will be only server-readable/writable
      *
      **/
-    public function __construct(string $name, string $value = "", int $expiresAt = 0, string $path = "", string $domain = "", bool $secure = false, bool $httpOnly = false)
+    public function __construct(string $name, string $value = "", int $expiresAt = 0, string $path = "", string $domain = "", bool $isSecureOnly = false, bool $httpOnly = false)
     {
       $this->name = $name;
       $this->value = $value;
       $this->expiresAt = $expiresAt;
       $this->path = $path;
-      $this->isSecure = $secure;
+      $this->isSecureOnly = $isSecureOnly;
       $this->domain = $domain;
       $this->httpOnly = $httpOnly;
     }

@@ -35,7 +35,7 @@
         # if header is an empty string, dont push it to status header list
         if(empty(trim($header))) {
           return $len;
-        }
+        }      
 
         $headers[] = trim($header);
         return $len;

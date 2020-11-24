@@ -5,7 +5,9 @@
   {
     protected $protocolVersion;
 
-    protected $body;
+    protected $parsedBody = array();
+    protected $body = "";
+
     protected $headers = array();
     protected $files = array();
     protected $cookies = array();
@@ -90,9 +92,7 @@
     }
 
     /**
-     * Returns a copy of this request with given protocol version
-     * 
-     * @return RequestInterface $request
+     * Returns this request with given protocol version
      **/
     public function withProtocolVersion(string $version)
     {
@@ -108,8 +108,8 @@
      **/
     public function getFromParsedBody($name)
     {
-      if (is_array($this->body) && isset($this->body[$name])) {
-        return $this->body[$name];
+      if (is_array($this->parsedBody) && isset($this->parsedBody[$name])) {
+        return $this->parsedBody[$name];
       } else {
         return null;
       }
@@ -130,14 +130,23 @@
     public function withBody($body)
     {
       $temp = $this;
-      $temp->body = $body;
+      
+      if (is_array($body)) {
+        $temp->parsedBody = $body;        
+      } else if (is_string($body)) {
+        $temp->body = $body;
+      } else {}
+
       return $temp;
     }
 
     public function withoutBody()
     {
       $temp = $this;
-      unset($temp->body);
+      
+      $temp->body = "";
+      $temp->parsedBody = array();
+
       return $temp;
     }
 
@@ -176,6 +185,13 @@
     {
       $temp = $this;
       $temp->files[$file->inputName()] = $file;
+      return $temp;
+    }
+
+    public function withoutFile($filename)
+    {
+      $temp = $this;
+      unset($temp->files[$filename]);
       return $temp;
     }
 

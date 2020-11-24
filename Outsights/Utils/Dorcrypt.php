@@ -1,8 +1,7 @@
 <?php
-  namespace Loom\Utils;
-  
+
   /**
-   * Dorcrypt - a utility to use cryptology in a simpler way with PHP
+   * Dorcrypt - a Utility to Use Cryptology In a Simpler Way with PHP
    */
   class Dorcrypt
   {
