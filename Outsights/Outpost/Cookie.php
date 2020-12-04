@@ -57,7 +57,7 @@
      **/
     public static function set(OutpostCookie $cookie)
     {
-      return setcookie($cookie->getName(), $cookie->getValue(), $cookie->getExpireTime(), $cookie->getPath(), $cookie->getDomain(), $cookie->isSecureOnly(), $cookie->isHTTPOnly());
+      return setcookie($cookie->getName(), $cookie->getValue(), $cookie->getExpireTimestamp(), $cookie->getPath(), $cookie->getDomain(), $cookie->isSecureOnly(), $cookie->isHTTPOnly());
     }
 
     /**

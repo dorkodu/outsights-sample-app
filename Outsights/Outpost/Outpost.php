@@ -91,7 +91,7 @@
       header("Cookie: ".$responseCookieString);
 
       echo $response->body;
-      # return a body, content type etc.
+      # BİTMEDİ DAHA! return a body, content type etc.
     }
 
     /**
@@ -252,13 +252,17 @@
 
     /**
      * Parses the raw HTTP headers. Generates an array in a format like :
-     * ['name' => 'value'] or ['name' => ['1','2'...]]
+     * ['name' => 'value']
      *
      * @param array $rawHeaders Raw HTTP headers
      * @return array A parsed headers array that contains headers in a relational way
      */
     public static function parseHTTPHeaders(array $rawHeaders)
     {
+      /**
+       * TODO: add support for multiple Set-Cookie headers.
+       */
+
       $parsedHeaders = array();
 
       foreach ($rawHeaders as $header) {
@@ -266,21 +270,68 @@
         $splittedHeader = explode(':', $header, 2);
 
         $headerName = trim($splittedHeader[0]);
-        $headerValueString = trim($splittedHeader[1]);
-
-        # parse the header line
-        $headerValue = ""; # just definition, in default, string type :D
-        if (strstr($headerValueString, ",") !== false) {
-          $headerValue = explode(',', $headerValueString);
-        } else {
-          $headerValue = trim($headerValueString);
-        }
+        $headerValue = trim($splittedHeader[1]);
 
         # pushing the parsed header line to $parsedHeaders
         $parsedHeaders[self::parseHeaderName($headerName)] = $headerValue;
       }
 
       return $parsedHeaders;
+    }
+
+    /**
+     * Parses the Set-Cookie header value and generates a OutpostCookie object
+     * @param string $header
+     *
+     * @return false on failure
+     * @return OutpostCookie on success
+     **/
+    public function parseCookieFromHeader(string $header)
+    {
+      # 
+      
+      /**
+       * I am sorry, this was the worst function that i have ever written.
+       * this is my fault, i messed things up.
+       * i am doruk dorkodu, doruk@dorkodu.com, @doruk - Wanderlyf
+       * 
+       */
+
+      if (!empty($header)) {
+
+        # define a temp array to hold the unparsed pairs
+        $temp = explode(';', $header);
+        $cookieAssoc = array(); # array to keep cookie properties
+
+        $nameValuePair = explode('=', $temp[0], 2);
+        
+        # assigning some variables
+        $cookieAssoc['name'] = $nameValuePair[0];
+        $cookieAssoc['value'] = $nameValuePair[1];
+        
+        array_shift($temp);
+
+        # trim all the elements in the array
+        foreach ($temp as $element) {
+          $parsedElement = explode("=", $element, 2);
+
+          $optionKey = $parsedElement[0];
+          $optionValue = (count($parsedElement) < 2) ? $parsedElement[0] : $parsedElement[1];
+
+          $cookieAssoc[$optionKey] = $optionValue;
+        }
+
+        $cookieName = $cookieAssoc['name'];
+        $cookieValue = $cookieAssoc['value'];
+        $cookieExpireTime = (array_key_exists('expires', $cookieAssoc)) ? $cookieAssoc['expires'] : 0;
+        $cookiePath = (array_key_exists('path', $cookieAssoc)) ? $cookieAssoc['path'] : "";
+        $cookieDomain = (array_key_exists('domain', $cookieAssoc)) ? $cookieAssoc['domain'] : "";
+        $cookieSecureOnly = (array_key_exists('secure', $cookieAssoc)) ? true : false;
+        $cookieHttpOnly = (array_key_exists('HttpOnly', $cookieAssoc)) ? true : false;
+        
+        return new OutpostCookie($cookieName, $cookieValue, $cookieExpireTime, $cookiePath, $cookieDomain, $cookieSecureOnly, $cookieHttpOnly);
+
+      } else return false;
     }
 
     /**

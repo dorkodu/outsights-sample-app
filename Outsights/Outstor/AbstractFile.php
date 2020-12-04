@@ -12,6 +12,14 @@
     protected $contents;
     protected $extension;
 
+    /**
+     * Class constructor.
+     */
+    public function __construct(string $path)
+    {
+      $this->path = $path;
+    }
+
     protected function parseFileName($path)
     {
       if (strpos($path, DIRECTORY_SEPARATOR) === false) {

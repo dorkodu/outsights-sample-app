@@ -6,24 +6,24 @@
    */
   class OutpostCookie
   {  
-    private $name;
-    private $value;
-    private $expiresAt = 0;
-    private $path = "/";
-    private $isSecureOnly = false;
-    private $domain;
-    private $httpOnly = false;
+    private string $name;
+    private string $value;
+    private int $expiresAt = 0;
+    private string $path = "/";
+    private bool $isSecureOnly = false;
+    private string $domain = "";
+    private bool $isHttpOnly = false;
   
     /**
      * Creates a new cookie value object.
      *
      * @param string $name Name of the cookie.
      * @param string $value Value that cookie will store.
-     * @param string $expiresAt Time in seconds that the cookie will be expired at.
+     * @param string $expiresAt UNIX timestamp that the cookie will be expired at.
      * @param string $path The path of the URI
      * @param boolean $isSecureOnly Tells if this cookie will be available only under secure HTTP - SSL
      * @param string $domain The domain of the URI
-     * @param boolean $httpOnly Tells if this cookie will be only server-readable/writable
+     * @param boolean $httpOnly Tells if this cookie will be only readable/writable by server
      *
      **/
     public function __construct(string $name, string $value = "", int $expiresAt = 0, string $path = "", string $domain = "", bool $isSecureOnly = false, bool $httpOnly = false)
@@ -47,7 +47,7 @@
       return $this->value;
     }
 
-    public function getExpireTime()
+    public function getExpireTimestamp()
     {
       return $this->expiresAt;
     }

@@ -6,12 +6,11 @@
   /**
    * Class to represent a "sent file" via HTTP POST.
    */
-  class SentFile extends AbstractFile
+  class OutpostFile extends AbstractFile
   {
     private $inputName;
     private $tmpName;
-    private $size;
-    private $type;
+    private $mimeType;
 
     /**
      * Class constructor.
@@ -28,7 +27,7 @@
           $this->path = $fileArray["tmp_name"];
           $this->tmpName = $this->parseFileName($this->path);
           $this->size = $fileArray["size"];
-          $this->type = $fileArray["type"];
+          $this->mimeType = $fileArray["type"];
           $this->extension = $this->parseFileExtension($this->name);
         } 
       }

@@ -181,7 +181,7 @@
       } else return false;
     }
 
-    public function withFile(SentFile $file)
+    public function withFile(OutpostFile $file)
     {
       $temp = $this;
       $temp->files[$file->inputName()] = $file;
