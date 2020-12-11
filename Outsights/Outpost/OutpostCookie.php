@@ -10,8 +10,8 @@
     private string $value;
     private int $expiresAt = 0;
     private string $path = "/";
-    private bool $isSecureOnly = false;
     private string $domain = "";
+    private bool $isSecureOnly = false;
     private bool $isHttpOnly = false;
   
     /**
@@ -34,7 +34,7 @@
       $this->path = $path;
       $this->isSecureOnly = $isSecureOnly;
       $this->domain = $domain;
-      $this->httpOnly = $httpOnly;
+      $this->isHttpOnly = $httpOnly;
     }
 
     public function getName()
@@ -64,12 +64,12 @@
 
     public function isHTTPOnly()
     {
-      return $this->httpOnly;
+      return $this->isHttpOnly;
     }
 
     public function isSecureOnly()
     {
-      return $this->secure;
+      return $this->isSecureOnly;
     }
   }
   

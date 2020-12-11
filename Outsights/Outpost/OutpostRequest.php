@@ -3,35 +3,61 @@
   
   class OutpostRequest extends AbstractMessage
   {
-    protected $target;
-    protected $method;
-    protected $uri;
+    protected string $target;
+    protected string $method;
+    protected string $uri;
 
     protected $query = array();
 
-    public function __construct($method, $url)
+    public function __construct(string $method, string $url)
     {
       $this->method = strtoupper($method);
       $this->target = $url;
+      
+      $uri = $this->parseTargetUrl($url)['uri'];
     }
+    
+    /**
+     * Parses the given URL, returns an array from parts
+     *
+     * @param string $targetUrl
+     * 
+     * @return array An array consists of 'protocol', 'domain', 'port', 'path', 'query', 'uri' keys and their values.
+     * @return false on failure
+     */
+    protected function parseTargetUrl(string $targetUrl)
+    {
+      $url = [];
+      if (preg_match("~^(([a-zA-Z0-9-_]+):\/\/)?\/?([^\/\.]+\.)*?([^\/\.]+\.[^:\/\s\.]{2,3}(\.[^:\/\s\.]{2,3})?)(:\d+)?($|\/)([^#?\s]+)?(.*?)?(#[\w\-]+)?$~", $targetUrl, $parsedUrl)) {
+        $url = [];
+        $url['protocol'] = $parsedUrl[2] ?? "http";
+        $url['domain'] = $parsedUrl[3].$parsedUrl[4];
+        
+        $urlPort = trim($parsedUrl[6], ":");
+        $url['port'] = (!empty($urlPort)) ? $urlPort : (($url['protocol'] == "https") ? "443" : "80");
+        
+        $url['path'] = (!empty($parsedUrl[8])) ? $parsedUrl : "/";
+        $url['query'] = trim($parsedUrl[9], "?");
+        
+        $url['uri'] = $url['path'].$url['query'];
 
+        return $url;
+      } else return false;
+    }
+    
     public function getRequestTarget() 
     {
       return $this->target;
     }
 
-    public function withRequestTarget($target)
+    public function withRequestTarget(string $target)
     {
-      $temp = $this;
-      $temp->target = $target;
-      return $temp;
+      $this->target = $target;
     }
     
-    public function withMethod($method)
+    public function withMethod(string $method)
     {
-      $temp = $this;
-      $temp->method = strtoupper($method);
-      return $temp;
+      $this->method = strtoupper($method);
     }
     
     public function getUri()
@@ -41,10 +67,13 @@
 
     public function withUri($uri)
     {
-      $temp = $this;
-      $temp->uri = $uri;
-      return $temp;
-    }   
+      $this->uri = $uri;
+    }
+
+    public function withoutUri()
+    {
+      $this->uri = "";
+    }
 
     public function getQueryString()
     {
@@ -53,9 +82,12 @@
 
     public function withQuery(array $query)
     {
-      $temp = $this;
-      $temp->query = $query;
-      return $temp;
+      $this->query = $query;
+    }
+
+    public function withoutQuery()
+    {
+      $this->query = array();
     }
 
     public function getMethod()
@@ -63,13 +95,6 @@
       return $this->method;
     }
 
-    public function isHttps()
-    {
-      if ($this->protocol == "HTTPS") {
-        return true;
-      } else return false;
-    }
-    
     /**
      * Gets the value for a given key, from the url query.
      *
@@ -82,6 +107,23 @@
       if (isset($this->query[$name])) {
         return $this->query[$name];
       } else return null;  
+    }
+
+    /**
+     * IMPORTANT
+     * ------------------ 
+     * The withCookie() methods vary between HTTP messages.
+     *  
+     * For requests, we only need a "name"-"value" pair.
+     * But for responses, we need complete OutpostCookie objects.
+     */
+
+    /**
+     * Set this request with the given cookie
+     **/
+    public function withCookie(string $name, string $cookie)
+    {
+      $this->cookies[$name] = $cookie;
     }
   }
   

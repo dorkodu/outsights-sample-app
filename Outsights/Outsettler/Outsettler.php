@@ -6,7 +6,7 @@
   use Outsights\Utils\Json\JsonPreprocessor;
 
   /**
-   * a Configuration library for Outsights
+   * a Configuration Library for Outsights
    */
 	class Outsettler {
 

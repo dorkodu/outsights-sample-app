@@ -1,4 +1,4 @@
-<?php
+<?php 
   namespace Outsights\Outpost;
   
   class CurlHTTP
@@ -76,6 +76,8 @@
           break;
       }
     }
+
+    
 
     /**
      * Sets a string value of the Set-Cookie header 

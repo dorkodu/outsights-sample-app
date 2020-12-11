@@ -7,6 +7,9 @@
    */
   class Outpost
   {
+    # the cookie jar file to keep cookies from Outpost transactions
+    protected const OUTPOST_COOKIEJAR = "/etc/loom/apache2/htdocs/outsights/resources/cookiejar.txt";
+
     public static function httpRequestHeaders()
     {
       $headers = array();
@@ -32,8 +35,7 @@
      */
     public static function createRequest(string $method, string $uri): OutpostRequest
     {
-      $request = new OutpostRequest($method, $uri);
-      return $request;
+      return new OutpostRequest($method, $uri);
     }
 
     /**
@@ -45,8 +47,66 @@
      */
     public static function createResponse(int $code = 200, string $reasonPhrase = 'OK'): OutpostResponse
     {
-      $response = new OutpostResponse($code, $reasonPhrase);
-      return $response;
+      return new OutpostResponse($code, $reasonPhrase);
+    }
+
+    /**
+     * Parses the Set-Cookie header value and generates a OutpostCookie object
+     * @param string $header
+     *
+     * @return false on failure
+     * @return OutpostCookie on success
+     **/
+    public static function parseCookieFromHeader(string $header)
+    {
+      /**
+       * I am sorry, this was the worst function that i have ever written.
+       * this is my fault, i messed things up. you are free to complain to me via :
+       * 
+       * i am : doruk dorkodu
+       * email : doruk@dorkodu.com
+       * wanderlyf : @doruk
+       * twitter : @dorukdorkodu
+       */
+
+      if (!empty($header)) {
+
+        # define a temp array to hold the unparsed pairs
+        $temp = explode(';', $header);
+        $cookieAssoc = array(); # array to keep cookie properties
+
+        $nameValuePair = explode('=', $temp[0], 2);
+        
+        # assigning some variables
+        $cookieAssoc['name'] = $nameValuePair[0];
+        $cookieAssoc['value'] = $nameValuePair[1];
+        
+        array_shift($temp);
+
+        # trim all the elements in the array
+        foreach ($temp as $element) {
+          $parsedElement = explode("=", $element, 2);
+
+          $optionKey = $parsedElement[0];
+          $optionValue = (count($parsedElement) < 2) ? $parsedElement[0] : $parsedElement[1];
+
+          $cookieAssoc[trim($optionKey)] = trim($optionValue);
+        }
+
+        $cookieName = trim($cookieAssoc['name']);
+        $cookieValue = trim($cookieAssoc['value']);
+        $cookieExpireTime = (array_key_exists('expires', $cookieAssoc)) ? $cookieAssoc['expires'] : "0";
+        $cookiePath = (array_key_exists('path', $cookieAssoc)) ? $cookieAssoc['path'] : "";
+        $cookieDomain = (array_key_exists('domain', $cookieAssoc)) ? $cookieAssoc['domain'] : "";
+        $cookieSecureOnly = (array_key_exists('secure', $cookieAssoc)) ? true : false;
+        $cookieHttpOnly = (array_key_exists('HttpOnly', $cookieAssoc)) ? true : false;
+
+        # string to timestamp (int) conversion
+        $cookieTimestamp = strtotime($cookieExpireTime);
+        
+        return new OutpostCookie($cookieName, $cookieValue, $cookieTimestamp, $cookiePath, $cookieDomain, $cookieSecureOnly, $cookieHttpOnly);
+
+      } else return false;
     }
 
     /**
@@ -75,7 +135,7 @@
     /**
      * Responses (literrally) to current request with a given HTTP Response Message
      *
-     * @param ResponseInterface $response
+     * @param OutpostResponse $response
      */
     public static function returnResponse(OutpostResponse $response)
     {
@@ -184,7 +244,10 @@
 
       # set default options
       $curl->setOpt(CURLOPT_FOLLOWLOCATION, true);
-      $curl->setOpt(CURLOPT_MAXREDIRS, 20);
+      $curl->setOpt(CURLOPT_MAXREDIRS, 10);
+      
+      $curl->setOpt(CURLOPT_COOKIEFILE, self::OUTPOST_COOKIEJAR);
+      $curl->setOpt(CURLOPT_COOKIEJAR, self::OUTPOST_COOKIEJAR);
 
       # set options
       if (count($options) > 0) {
@@ -206,6 +269,7 @@
       $responseHeaders = $curl->getResponseHeaders();
       $responseBody = $curl->getResponseBody();
 
+      # parse raw headers, split different landings (on redirects, create a different array of headers for the new location)
       $parsedHeaders = self::parseRawResponseHeaders($responseHeaders);
 
       # redirect count
@@ -233,20 +297,43 @@
         $reasonPhrase = "OK";
       }
 
+      ### generating an OutpostResponse
 
-      # generating an OutpostResponse
       # have to add headers, body, cookies, files, and other knowledge...
       $response = self::createResponse($statusCode, $reasonPhrase);
-      $response = $response->withProtocolVersion($protocolVersion);
+      $response->withProtocolVersion($protocolVersion);
 
+      
+      # generate cookies from all received Set-Cookie headers
+
+      $cookieStrings = [];
+      
+      foreach ($landedPageHeaders as $header) {
+        # check if a Set-Cookie header
+        if (preg_match("/^Set-Cookie:(.*)$/", $header, $parsedResults)) {
+          $cookieStrings[] = $parsedResults[1];
+        }
+      }
+
+      if (!empty($cookieStrings)) {
+        foreach ($cookieStrings as $cookieString) {
+          $cookie = self::parseCookieFromHeader($cookieString);
+
+          if ($cookie !== false) {
+            $response->withCookie($cookie->getName(), $cookie);
+          }
+        }
+      }
+
+      $parsedHeaders = self::parseHTTPHeaders($landedPageHeaders);
+      
       # set header
-      $parsedLandedPageHeaders = self::parseHTTPHeaders($landedPageHeaders);
-      $response = $response->withHeaders($parsedLandedPageHeaders);
+      $response->withHeaders($parsedHeaders);
 
       # set body
-      $response = $response->withBody($responseBody);
-    
-      # finally, oh my god its done
+      $response->withBody($responseBody);
+   
+      # finally, oh my god its done! :D
       return $response;
     }
 
@@ -255,6 +342,7 @@
      * ['name' => 'value']
      *
      * @param array $rawHeaders Raw HTTP headers
+     * 
      * @return array A parsed headers array that contains headers in a relational way
      */
     public static function parseHTTPHeaders(array $rawHeaders)
@@ -280,61 +368,6 @@
     }
 
     /**
-     * Parses the Set-Cookie header value and generates a OutpostCookie object
-     * @param string $header
-     *
-     * @return false on failure
-     * @return OutpostCookie on success
-     **/
-    public function parseCookieFromHeader(string $header)
-    {
-      # 
-      
-      /**
-       * I am sorry, this was the worst function that i have ever written.
-       * this is my fault, i messed things up.
-       * i am doruk dorkodu, doruk@dorkodu.com, @doruk - Wanderlyf
-       * 
-       */
-
-      if (!empty($header)) {
-
-        # define a temp array to hold the unparsed pairs
-        $temp = explode(';', $header);
-        $cookieAssoc = array(); # array to keep cookie properties
-
-        $nameValuePair = explode('=', $temp[0], 2);
-        
-        # assigning some variables
-        $cookieAssoc['name'] = $nameValuePair[0];
-        $cookieAssoc['value'] = $nameValuePair[1];
-        
-        array_shift($temp);
-
-        # trim all the elements in the array
-        foreach ($temp as $element) {
-          $parsedElement = explode("=", $element, 2);
-
-          $optionKey = $parsedElement[0];
-          $optionValue = (count($parsedElement) < 2) ? $parsedElement[0] : $parsedElement[1];
-
-          $cookieAssoc[$optionKey] = $optionValue;
-        }
-
-        $cookieName = $cookieAssoc['name'];
-        $cookieValue = $cookieAssoc['value'];
-        $cookieExpireTime = (array_key_exists('expires', $cookieAssoc)) ? $cookieAssoc['expires'] : 0;
-        $cookiePath = (array_key_exists('path', $cookieAssoc)) ? $cookieAssoc['path'] : "";
-        $cookieDomain = (array_key_exists('domain', $cookieAssoc)) ? $cookieAssoc['domain'] : "";
-        $cookieSecureOnly = (array_key_exists('secure', $cookieAssoc)) ? true : false;
-        $cookieHttpOnly = (array_key_exists('HttpOnly', $cookieAssoc)) ? true : false;
-        
-        return new OutpostCookie($cookieName, $cookieValue, $cookieExpireTime, $cookiePath, $cookieDomain, $cookieSecureOnly, $cookieHttpOnly);
-
-      } else return false;
-    }
-
-    /**
      * Returns the client IP address from current request
      *
      * @return string the client IP
@@ -356,11 +389,11 @@
     }
 
     /**
-     * Creates a request object from the present HTTP $_SERVER request.
+     * Creates a request object from the present HTTP request.
      *
      * @return OutpostRequest $request
      **/
-    public function currentRequest()
+    public static function currentRequest()
     {
       $method = (isset($_SERVER['REQUEST_METHOD']) && !empty($_SERVER['REQUEST_METHOD'])) ? $_SERVER['REQUEST_METHOD'] : 'GET' ;
       $uri = (isset($_SERVER['REQUEST_URI']) && !empty($_SERVER['REQUEST_URI'])) ? $_SERVER['REQUEST_URI'] : '/' ;
@@ -368,22 +401,21 @@
       $request = new OutpostRequest($method, $uri);
 
       foreach ($_COOKIE as $name => $value) {
-        $request = $request->withCookie($name, $value);
+        $request->withCookie($name, $value);
       }
 
-      $request = $request->withHeaders($this->httpRequestHeaders());
+      $request->withHeaders(self::httpRequestHeaders());
 
       $protocolVersion = explode('/', $_SERVER['SERVER_PROTOCOL'])[1];
-      $request = $request->withProtocolVersion($protocolVersion);
+      $request->withProtocolVersion($protocolVersion);
 
-      $request = $request->withRequestTarget(self::getUrl());
+      $request->withRequestTarget(self::getUrl());
 
-      $request = $request->withBody($_POST);
+      $request->withBody($_POST);
 
-      $request = $request->withQuery($_GET);
+      $request->withQuery($_GET);
 
       return $request;
-
     }
 
     /**
@@ -394,7 +426,7 @@
     public static function getUrl()
     {
       $host = $_SERVER['HTTP_HOST'] . $_SERVER['SERVER_PORT'];
-      $protocol = self::isSecureConnection() ? 'https' : 'http';
+      $protocol = self::isSecureRequest() ? 'https' : 'http';
       $uri = $_SERVER['REQUEST_URI'];
       return $protocol . "://" . $host . $uri;
     }
@@ -404,7 +436,7 @@
      *
      * @return boolean
      */
-    public static function isSecureConnection()
+    public static function isSecureRequest()
     {
       if (!empty($_SERVER['HTTPS']) && !is_null($_SERVER['HTTPS'])) {
         return true;

@@ -32,35 +32,25 @@
 
     public function withHeader(string $name, $value)
     {
-      $temp = $this;
-      
-      $contents = "";
-      
       if (is_array($value)) {
         $contents = implode(',', $value);
       } else {
         $contents = $value;
       }
-      
+
       $this->setHeader($name, $contents);      
-      return $temp;
     }
 
     public function withHeaders(array $headers)
     {
-      $temp = $this;
       foreach ($headers as $name => $value) {
-        $temp->setHeader($name, $value);
+        $this->setHeader($name, $value);
       }
-
-      return $temp;
     }
 
     public function withoutHeader($name)
     {
-      $temp = $this;
-      unset($temp->headers[$name]);
-      return $temp;
+      unset($this->headers[$name]);
     }
     
     protected function parseHeaderName(string $name)
@@ -96,9 +86,7 @@
      **/
     public function withProtocolVersion(string $version)
     {
-      $temporary = $this;
-      $temporary->protocolVersion = $version;
-      return $temporary;
+      $this->protocolVersion = $version;
     }
 
     # BODY
@@ -124,30 +112,27 @@
     }
 
     /**
-     * Returns a copy of this request with given body
+     * Set this request with given body
      * 
      **/
     public function withBody($body)
     {
-      $temp = $this;
-      
       if (is_array($body)) {
-        $temp->parsedBody = $body;        
+        $this->parsedBody = $body;        
       } else if (is_string($body)) {
-        $temp->body = $body;
-      } else {}
-
-      return $temp;
+        $this->body = $body;
+      }
     }
 
+    /**
+     * Set this request without body
+     *
+     * @return void
+     */
     public function withoutBody()
     {
-      $temp = $this;
-      
-      $temp->body = "";
-      $temp->parsedBody = array();
-
-      return $temp;
+      $this->body = "";
+      $this->parsedBody = array();
     }
 
     # FILES
@@ -183,16 +168,18 @@
 
     public function withFile(OutpostFile $file)
     {
-      $temp = $this;
-      $temp->files[$file->inputName()] = $file;
-      return $temp;
+      $this->files[$file->inputName()] = $file;
     }
 
-    public function withoutFile($filename)
+    /**
+     * Set this request without the given file
+     *
+     * @param string $filename
+     * @return void
+     */
+    public function withoutFile(string $filename)
     {
-      $temp = $this;
-      unset($temp->files[$filename]);
-      return $temp;
+      unset($this->files[$filename]);
     }
 
     # COOKIES
@@ -218,25 +205,22 @@
     {
       return $this->cookies;
     }
-    
-    /**
-     * Returns a copy of this request with given cookie
-     **/
-    public function withCookie($name, $value)
-    {
-      $temp = $this;
-      $temp->cookies[$name] = $value;
-      return $temp;
-    }
 
     /**
-     * Returns a copy of this request without given cookie
+     * IMPORTANT
+     * ------------------ 
+     * The withCookie() methods vary between HTTP messages.
+     *  
+     * For requests, we only need a "name"-"value" pair.
+     * But for responses, we need complete OutpostCookie objects.
+     */
+
+    /**
+     * Set this request without the given cookie
      **/
     public function withoutCookie($name)
     {
-      $temp = $this;
-      unset($temp->cookies[$name]);
-      return $temp;
+      unset($this->cookies[$name]);
     }
-  }
+}
   
