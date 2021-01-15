@@ -1,6 +1,9 @@
 <?php
 
-  namespace Outsights\Outpost;
+  namespace Outsights;
+
+  use Outsights\Outpost\OutpostFile;
+  use Outsights\Outpost\OutpostCookie;
 
   /**
    * Cookie controller class for Outpost ecosystem.
@@ -8,7 +11,7 @@
   class Cookie
   {
     /**
-     * Gets the cookie.
+     * Gets the cookie
      *
      * @param string $name
      *
@@ -24,33 +27,26 @@
     }
 
     /**
-     * Creates a new cookie value object.
+     * Creates a new cookie value object
      *
      * @param string $name Name of the cookie.
      * @param string $value Value that cookie will store.
      * @param string $expiresAt Time in seconds that the cookie will be expired at.
      * @param string $path
-     * @param string $domain description.
-     * @param boolean $httpOnly description.
+     * @param string $domain
+     * @param boolean $secure Tells if cookie should only be sent via HTTPS from the client.
+     * @param boolean $httpOnly Tells if cookie should only be readable by server.
      *
      * @return true on success
      * @return false on failure
      **/
     public static function bake(string $name, string $value = "", int $expiresAt = 0, string $path = "/", string $domain = "", bool $secure = false, bool $httpOnly = false)
     {
-      $newCookie = new OutpostCookie($name, $value, $expiresAt, $path, $domain, $secure, $httpOnly);
-      return $newCookie;
+      return new OutpostCookie($name, $value, $expiresAt, $path, $domain, $secure, $httpOnly);
     }
 
     /**
-     * Creates a new cookie value object.
-     *
-     * @param string $name Name of the cookie.
-     * @param string $value Value that cookie will store.
-     * @param string $expiresAt Time in seconds that the cookie will be expired at.
-     * @param string $path
-     * @param string $domain description.
-     * @param boolean $httpOnly description.
+     * Sets a cookie from OutpostCookie
      *
      * @return true on success
      * @return false on failure

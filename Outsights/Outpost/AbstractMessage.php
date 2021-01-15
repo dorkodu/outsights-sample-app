@@ -92,7 +92,7 @@
     # BODY
 
     /**
-     * Returns an input datum from the parsed body.
+     * Returns an input value from the parsed body.
      **/
     public function getFromParsedBody($name)
     {
@@ -110,18 +110,31 @@
     {
       return $this->body;
     }
+    
+    /**
+     * Returns the parsed body of this request
+     **/
+    public function getParsedBody()
+    {
+      return $this->parsedBody;
+    }
 
     /**
      * Set this request with given body
      * 
      **/
-    public function withBody($body)
+    public function withBody(string $body)
     {
-      if (is_array($body)) {
-        $this->parsedBody = $body;        
-      } else if (is_string($body)) {
-        $this->body = $body;
-      }
+      $this->body = $body;
+    }
+
+    /**
+     * Set this request with given body
+     * 
+     **/
+    public function withParsedBody(array $parsedBody)
+    {
+      $this->parsedBody = $parsedBody;        
     }
 
     /**
@@ -132,13 +145,22 @@
     public function withoutBody()
     {
       $this->body = "";
+    }
+
+    /**
+     * Set this request without parsed body
+     *
+     * @return void
+     */
+    public function withoutParsedBody()
+    {
       $this->parsedBody = array();
     }
 
     # FILES
 
     /**
-     * Gets the value for a given cookie, from the Request.
+     * Gets a file or a file array from the Request.
      *
      * @param string $name Key to look up in query
      * 
@@ -153,11 +175,22 @@
     }
 
     /**
-     * Checks if request has file.
+     * Gets the files array from the Request.
      *
      * @param string $name Key to look up in query
      * 
-     * @return bool true if has, false else  
+     **/
+    public function getFiles()
+    {
+      return $this->files; 
+    }
+
+    /**
+     * Checks if request has file.
+     *
+     * @param string $name OutpostFile's input name to look up in query
+     * 
+     * @return bool true if has, false otherwise  
      **/
     public function hasFile($name)
     {
@@ -166,9 +199,29 @@
       } else return false;
     }
 
-    public function withFile(OutpostFile $file)
+    /**
+     * Set this request with the given file input
+     *
+     * @param string $inputName Input name to use as a key to your passed file input
+     * @param mixed $file Can be a single OutpostFile instance, or an array of OutpostFile instances
+     * @return void
+     */
+    public function withFile(string $inputName, $file)
     {
-      $this->files[$file->inputName()] = $file;
+      $instanceFilter = function ($instanceCandidate) {
+        return ($instanceCandidate instanceof OutpostFile);
+      };
+
+      if (is_array($file)) {
+        # my first usage of map-filter-reduce in PHP :D
+        $filteredResults = array_filter($file, $instanceFilter);
+        $this->files[$inputName] = $filteredResults;
+      }
+      
+      if ($file instanceof OutpostFile) {
+        # if an OutpostFile instance, simply push to files array
+        $this->files[$inputName] = $file;
+      }
     }
 
     /**

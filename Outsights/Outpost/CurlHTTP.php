@@ -75,9 +75,7 @@
           $this->setOpt(CURLOPT_CUSTOMREQUEST, $method);
           break;
       }
-    }
-
-    
+    }    
 
     /**
      * Sets a string value of the Set-Cookie header 

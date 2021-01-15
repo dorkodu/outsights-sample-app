@@ -6,6 +6,10 @@
     protected $statusCode;
     protected $reasonPhrase;
 
+    # decided to add this as optionally
+    protected $redirectCount = 0;
+    protected $rawHeaders;
+
     /**
      * Class constructor.
      */
@@ -14,6 +18,8 @@
       $this->statusCode = $statusCode;
       $this->reasonPhrase = $reasonPhrase;
     }
+
+    # response code
     
     public function getStatusCode() 
     {
@@ -29,7 +35,42 @@
     public function getReasonPhrase()
     {
       return $this->reasonPhrase;
-    }  
+    }
+
+    # raw headers
+    
+    public function withRawHeaders(array $rawHeaders)
+    {
+      $this->rawHeaders = $rawHeaders;
+    }
+
+    public function withoutRawHeaders()
+    {
+      $this->rawHeaders = array();
+    }
+
+    public function getRawHeaders()
+    {
+      return $this->rawHeaders;
+    }
+
+    # redirect count
+
+    public function getRedirectCount()
+    {
+      return $this->redirectCount;
+    }
+
+    public function withRedirectCount(int $count)
+    {
+      $this->redirectCount = $count;
+    }
+
+    public function withoutRedirectCount()
+    {
+      $this->redirectCount = 0;
+    }
+
 
     /**
      * IMPORTANT

@@ -36,7 +36,7 @@
     public static function makeUseful(string $path)
     {
       if (file_exists($path)) {
-        return chmod($path, 0666);
+        return chmod($path, 0777);
       } else {
         return false;
       }
@@ -60,8 +60,8 @@
 		}
 		
     /**
-     * Creates a useful file with 0777 permissions
-     *
+     * Creates a useful file 
+     * 
      * @param string $filePath
      * 
      * @return true on success
@@ -91,8 +91,10 @@
       if(self::isUsefulFile($filePath) === false) {
         return true;
       } else {
-        if(unlink($filePath) && self::isUsefulFile($filePath) === false) {
-          return true;
+        if(unlink($filePath)) {
+          if (self::isUsefulFile($filePath) === false) {
+            return true;            
+          }
         } else return false; # something went wrong when deleting file
       }
     }

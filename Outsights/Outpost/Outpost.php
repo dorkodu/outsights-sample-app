@@ -8,9 +8,9 @@
   class Outpost
   {
     # the cookie jar file to keep cookies from Outpost transactions
-    protected const OUTPOST_COOKIEJAR = "/etc/loom/apache2/htdocs/outsights/resources/cookiejar.txt";
+    protected const OUTPOST_COOKIEJAR = "resources/cookiejar";
 
-    public static function httpRequestHeaders()
+    private static function httpRequestHeaders()
     {
       $headers = array();
       foreach ($_SERVER as $name => $value) {
@@ -23,7 +23,7 @@
 
     protected static function parseHeaderName(string $name)
     {
-      return trim(str_replace(' ', '-', ucwords(mb_strtolower(str_replace('_', ' ', str_replace('-', '_', $name)), "UTF-8"))));
+      return \trim(\str_replace(' ', '-', \ucwords(strtolower(str_replace('_', ' ', str_replace('-', '_', $name))))));
     }
 
     /**
@@ -62,7 +62,7 @@
       /**
        * I am sorry, this was the worst function that i have ever written.
        * this is my fault, i messed things up. you are free to complain to me via :
-       * 
+       *
        * i am : doruk dorkodu
        * email : doruk@dorkodu.com
        * wanderlyf : @doruk
@@ -76,11 +76,11 @@
         $cookieAssoc = array(); # array to keep cookie properties
 
         $nameValuePair = explode('=', $temp[0], 2);
-        
+
         # assigning some variables
         $cookieAssoc['name'] = $nameValuePair[0];
         $cookieAssoc['value'] = $nameValuePair[1];
-        
+
         array_shift($temp);
 
         # trim all the elements in the array
@@ -103,7 +103,7 @@
 
         # string to timestamp (int) conversion
         $cookieTimestamp = strtotime($cookieExpireTime);
-        
+
         return new OutpostCookie($cookieName, $cookieValue, $cookieTimestamp, $cookiePath, $cookieDomain, $cookieSecureOnly, $cookieHttpOnly);
 
       } else return false;
@@ -231,50 +231,136 @@
      * Makes a HTTP request with given HTTP Request Message
      *
      * @param OutpostRequest $request
+     * @param array $options If you wish, you can pass CURLOPT_* options, which will be set.
      *
-     * @return OutpostResponse $response
+     * @return OutpostResponse
      */
     public static function sendRequest(OutpostRequest $request, array $options = [])
     {
       $curl = new CurlHTTP();
 
-      # send with method to url
+      # SET METHOD AND TARGET URL
       $curl->setURL($request->getRequestTarget());
       $curl->setMethod($request->getMethod());
 
-      # set default options
+      # SET DEFAULT OPTIONS
       $curl->setOpt(CURLOPT_FOLLOWLOCATION, true);
       $curl->setOpt(CURLOPT_MAXREDIRS, 10);
-      
       $curl->setOpt(CURLOPT_COOKIEFILE, self::OUTPOST_COOKIEJAR);
       $curl->setOpt(CURLOPT_COOKIEJAR, self::OUTPOST_COOKIEJAR);
 
-      # set options
+      # SET OPTIONS
       if (count($options) > 0) {
         foreach ($options as $name => $value) {
           $curl->setOpt($name, $value);
         }
       }
 
-      # send cookies
+      # SET COOKIES
       if (count($request->getCookies()) > 0) {
         $curl->setCookies($request->getCookies());
       }
 
-      # send headers
+      # SET FILES (array of OutpostFile)
+      
+      # payload array that contains OutpostFile objects
+      $filePayload = array();
+      $requestFiles = $request->getFiles();
+
+      foreach ($requestFiles as $key => $sentFile) {
+        /**
+         * PROBLEM : What if $sentFile is an array? GOD DAMN!
+         * TODO: Find a way to handle an array of OutpostFile's
+         */
+
+        # convert each OutpostFile desired to be sent, to CURLFile
+        # if array, iterate and convert, filter
+        if (is_array($sentFile)) {
+          $convertedSentFileArray = array();
+          foreach ($sentFile as $sentFileItem) {
+            if ($sentFileItem instanceof OutpostFile) {
+              $convertedItem = self::convertToCURLFile($sentFileItem);
+              # pushes only if item is converted correctly
+              if ($convertedItem !== false && $convertedItem instanceof \CURLFile) {
+                array_push($convertedSentFileArray, $convertedItem);
+              }
+            }
+          }
+
+          $filePayload[$key] = $convertedSentFileArray;
+        } else {
+          if ($sentFile instanceof OutpostFile) {
+            $convertedSentFile = self::convertToCURLFile($sentFile);
+            # adds only if converted correctly
+            if ($convertedSentFile !== false && $convertedSentFile instanceof \CURLFile) {
+              $filePayload[$key] = $convertedSentFile;
+            }
+          }
+        }   
+
+      }
+
+
+      # SET BODY
+      
+      /**
+       * When method is POST, attach a body from result of a decision.
+       *
+       * $curlPostBody : the wrapper for HTTP Body
+       * 
+       * If files exist merge like this --> [(parsed body) + files)]
+       * If no files but parsed body, send it directly
+       * If only text body, send it directly
+       */
+      if (strtoupper($request->getMethod()) == "POST") {
+        if (!empty($filePayload)) {
+          
+          /**
+           * It sends parsed body first, because there may be a CSRF token 
+           * or any crucial POST fields, god knows...
+           * 
+           * NOTICE : array_merge() function WILL NOT overwrite existing fields. 
+           *          the first parameter array's values will be preserved AS IS.
+           */
+          $curlPostBody = array_merge($request->getParsedBody(), $filePayload);
+
+        } else if (!empty($request->getParsedBody())) {
+          # send only parsed body
+          $curlPostBody = $request->getParsedBody();
+        } else {
+          # send only text
+          $curlPostBody = $request->getBody();
+        }
+
+        $curl->setBody($curlPostBody);
+      }
+
+      # SEND HEADERS
       $curl->setHeaders(self::serializeHeaders($request->getHeaders()));
       $curl->execute();
+      
+      # construct an OutpostResponse from CurlHTTP
+      return self::constructResponseFromCURL($curl);
+    }
 
-      # generating the outpost http response
+    /**
+     * Constructs an OutpostResponse from a finished CurlHTTP request
+     *
+     * @param CurlHTTP $curl Should be a finished request CurlHTTP object 
+     * @return OutpostResponse response to a OutpostRequest sent
+     **/
+    private static function constructResponseFromCURL(CurlHTTP $curl)
+    {
       $responseHeaders = $curl->getResponseHeaders();
       $responseBody = $curl->getResponseBody();
 
-      # parse raw headers, split different landings (on redirects, create a different array of headers for the new location)
+      # parse raw headers, split different landings
+      # (on redirects, create a different array of headers for the new location)
       $parsedHeaders = self::parseRawResponseHeaders($responseHeaders);
 
       # redirect count
       $redirectCount = count($parsedHeaders) - 1;
-
+      
       $landedPageHeaders = $parsedHeaders[count($parsedHeaders) - 1];
       $statusHeader = $landedPageHeaders[0];
 
@@ -291,23 +377,27 @@
         $statusCode = $parsedStatusHeader['status-code'];
         $reasonPhrase = $parsedStatusHeader['reason-phrase'];
       } else {
-        # defaults
+        # default response status
         $protocolVersion = "1.1";
         $statusCode = "200";
         $reasonPhrase = "OK";
       }
 
-      ### generating an OutpostResponse
+      # CONSTRUCT a new OutpostResponse
 
-      # have to add headers, body, cookies, files, and other knowledge...
+      # have to add headers, body, cookies, files, and other information...
       $response = self::createResponse($statusCode, $reasonPhrase);
       $response->withProtocolVersion($protocolVersion);
 
-      
+      # optional info about HTTP lifecycle
+      $response->withRedirectCount($redirectCount);
+      $response->withRawHeaders($parsedHeaders);
+
+
       # generate cookies from all received Set-Cookie headers
 
       $cookieStrings = [];
-      
+
       foreach ($landedPageHeaders as $header) {
         # check if a Set-Cookie header
         if (preg_match("/^Set-Cookie:(.*)$/", $header, $parsedResults)) {
@@ -326,13 +416,13 @@
       }
 
       $parsedHeaders = self::parseHTTPHeaders($landedPageHeaders);
-      
+
       # set header
       $response->withHeaders($parsedHeaders);
 
       # set body
       $response->withBody($responseBody);
-   
+
       # finally, oh my god its done! :D
       return $response;
     }
@@ -342,19 +432,20 @@
      * ['name' => 'value']
      *
      * @param array $rawHeaders Raw HTTP headers
-     * 
+     *
      * @return array A parsed headers array that contains headers in a relational way
      */
-    public static function parseHTTPHeaders(array $rawHeaders)
+    private static function parseHTTPHeaders(array $rawHeaders)
     {
       /**
-       * TODO: add support for multiple Set-Cookie headers.
+       * I DID HERE:
+       * Added support for multiple Set-Cookie headers.
        */
 
       $parsedHeaders = array();
 
       foreach ($rawHeaders as $header) {
-        
+
         $splittedHeader = explode(':', $header, 2);
 
         $headerName = trim($splittedHeader[0]);
@@ -400,22 +491,138 @@
 
       $request = new OutpostRequest($method, $uri);
 
+      # cookies
       foreach ($_COOKIE as $name => $value) {
         $request->withCookie($name, $value);
       }
 
-      $request->withHeaders(self::httpRequestHeaders());
+      # headers
+      $requestHeaders = self::httpRequestHeaders();
+      foreach ($requestHeaders as $name => $value) {
+        $request->withHeader($name, $value);
+      }
 
+      # protocol version
       $protocolVersion = explode('/', $_SERVER['SERVER_PROTOCOL'])[1];
       $request->withProtocolVersion($protocolVersion);
 
+      # target
       $request->withRequestTarget(self::getUrl());
 
-      $request->withBody($_POST);
+      # post - parsed body
+      $request->withParsedBody($_POST);
 
+      # post - raw input string
+      $rawPostInput = file_get_contents("php://input");
+      $request->withBody($rawPostInput);
+
+      # get (url query string)
       $request->withQuery($_GET);
 
+       /* 
+          SAMPLE POST FILE PSUEDO-ARRAY
+          -----------------------------------------------------
+          Array
+          (
+            [files] => Array
+            (
+              [name] => sample.zip
+              [type] => application/zip
+              [tmp_name] => /etc/lamp/php/tmp/phpLHc9Ym
+              [error] => 0
+              [size] => 17453481
+            )
+          )
+       */
+
+      # I DID HERE:
+      # create OutpostFile objects from sent $_FILES global, and attach to current $request
+
+      # parse and make $_FILES array "tidy", which can include distributed properties
+      $parsedUploadsInfo = self::parseUploadsInfo($_FILES);
+
+      if($parsedUploadsInfo !== false) {
+
+        foreach ($parsedUploadsInfo as $uploadInput => $uploadInfo) {
+
+          if (is_array($uploadInfo)) {
+            # multiple files are sent under a single input
+            # so convert them, add under an array            
+            $multiFileArray = array();
+
+            # convert upload info to OutpostFile
+            foreach ($uploadInfo as $uploadItem) {
+              array_push($multiFileArray, new OutpostFile($uploadItem['tmp_name'], $uploadInput, $uploadItem['name']));
+            }
+
+            # add as a file list
+            $request->withFile($uploadInput, $multiFileArray);
+
+          } else {
+            $request->withFile($uploadInput, new OutpostFile($uploadInfo['tmp_name'], $uploadInput, $uploadInfo['name']));
+          }
+        }
+      }
+
       return $request;
+    }
+
+    /**
+     * Parses the uploaded files info from the given array. (e.g. $_FILES)
+     * It beautifes the array, simply makes it "tidy"
+     *
+     * @param array $uploadedFiles
+     *
+     * @return array
+     */
+    private static function parseUploadsInfo(array $uploadedFiles)
+    {
+      $parsedInfo = array();
+      
+      foreach ($uploadedFiles as $key => $value) {
+  
+        if (is_array($value['name'])) {
+          
+          $parsedInfo[$key] = array();
+          $fileCount = count($value['name']);
+  
+          for ($i = 0; $i < $fileCount; $i++) {
+            $file = array();
+  
+            $file['name'] = $value['name'][$i];
+            $file['type'] = $value['type'][$i];
+            $file['tmp_name'] = $value['tmp_name'][$i];
+            $file['error'] = $value['error'][$i];
+            $file['size'] = $value['size'][$i];
+  
+            array_push($parsedInfo[$key], $file);
+          }
+  
+        } else {
+          $parsedInfo[$key] = $value; # it is beautiful anyways ;)
+        }
+      }
+  
+      return $parsedInfo;
+    }
+
+    /**
+     * Converts an OutpostFile to CURLFile.
+     * This CURLFile can be used to send files using cURL
+     *
+     * @param OutpostFile $outpostFile
+     *
+     * @return CURLFile on success
+     * @return false on failure
+     */
+    private static function convertToCURLFile(OutpostFile $outpostFile)
+    {
+      if ($outpostFile->exists()) {
+        $curlFile = curl_file_create($outpostFile->path(), $outpostFile->mimeType(), $outpostFile->name());
+        return $curlFile;
+      } else {
+        return false; # file does not exist, so can't be sent
+      }
     }
 
     /**
@@ -425,7 +632,7 @@
      */
     public static function getUrl()
     {
-      $host = $_SERVER['HTTP_HOST'] . $_SERVER['SERVER_PORT'];
+      $host = $_SERVER['HTTP_HOST'];
       $protocol = self::isSecureRequest() ? 'https' : 'http';
       $uri = $_SERVER['REQUEST_URI'];
       return $protocol . "://" . $host . $uri;

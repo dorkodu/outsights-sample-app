@@ -4,47 +4,39 @@
   use Outsights\Outstor\AbstractFile;
 
   /**
-   * Class to represent a "sent file" via HTTP POST.
+   *  Class to represent a file which will be sent via a HTTP POST request.
    */
   class OutpostFile extends AbstractFile
   {
-    private $inputName;
-    private $tmpName;
-    private $mimeType;
+    private string $inputName;
 
     /**
      * Class constructor.
      */
-    public function __construct(string $name)
+    public function __construct(string $path, string $inputName, string $name = "")
     {
-      $this->inputName = $name;
+      $this->path = $path;
       
-      if ($this->isPresent()) {
-        $fileArray = $_FILES[$this->inputName];
+      if ($this->exists()) {
+        /**
+         * if a preferred name is given, will use it. 
+         * otherwise, will parse from the path
+         */
+        $this->name = !empty($name) ? $name : $this->parseFileName($this->path);
 
-        if (in_array("name", $fileArray)) {
-          $this->name = $fileArray["name"];
-          $this->path = $fileArray["tmp_name"];
-          $this->tmpName = $this->parseFileName($this->path);
-          $this->size = $fileArray["size"];
-          $this->mimeType = $fileArray["type"];
-          $this->extension = $this->parseFileExtension($this->name);
-        } 
+        $this->size = filesize($this->path);
+        $this->mimeType = mime_content_type($this->path);
+        $this->extension = $this->parseFileExtension($this->name);
+        $this->inputName = $inputName;
       }
     }
-
+    
     /**
      * Returns if a file is sent and present
      **/
-    public function isPresent()
+    public function exists()
     {
-      if (empty($this->inputName)) return false;
-
-      if (isset($_FILES[$this->inputName]) && $_FILES[$this->inputName]['error'] == 0) {
-        return true;
-      } else {
-        return false;
-      }
+      return is_file($this->path);
     }
 
     /**
@@ -56,15 +48,7 @@
     }
 
     /**
-     * Returns the uploaded file's temporary name 
-     **/
-    public function tempName()
-    {
-      return $this->tmpName;
-    }
-
-    /**
-     * Return the size of the uploaded file.
+     * Return the size of the file.
      **/
     public function size()
     {

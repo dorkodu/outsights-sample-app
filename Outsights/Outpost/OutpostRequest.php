@@ -7,14 +7,18 @@
     protected string $method;
     protected string $uri;
 
-    protected $query = array();
+    protected array $query = array();
 
     public function __construct(string $method, string $url)
     {
       $this->method = strtoupper($method);
       $this->target = $url;
+
+      # Parses URI from Request Target, if not false, assign it.      
+      $uri = $this->parseTargetUrl($url);
       
-      $uri = $this->parseTargetUrl($url)['uri'];
+      if($uri !== false && is_array($uri))
+        $this->uri = $uri['uri'];
     }
     
     /**

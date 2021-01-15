@@ -1,5 +1,4 @@
 <?php 
-
   namespace Outsights\Outstor;
   
   /**
@@ -7,18 +6,21 @@
    */
   abstract class AbstractFile
   {
-    protected $name;
-    protected $path;
-    protected $contents;
-    protected $extension;
+    protected string $name;
+    protected string $path;
+    protected string $contents;
+    protected string $extension;
+    protected string $mimeType;
 
     /**
-     * Class constructor.
+     * 
+     * TODO:
+     * 
+     * When you implement, get the path,
+     * and generate all other properties based
+     * on the information from the file.
+     * 
      */
-    public function __construct(string $path)
-    {
-      $this->path = $path;
-    }
 
     protected function parseFileName($path)
     {
@@ -33,7 +35,7 @@
     protected function parseFileExtension($path)
     {
       if (strpos($path, ".") === false) {
-        return null;
+        return "";
       } else {
         $tempPathElements = explode(".", $path);
         return strtolower(end($tempPathElements));
@@ -57,12 +59,12 @@
 
     public function mimeType()
     {
-      return mime_content_type($this->path);
+      return $this->mimeType;
     }
 
     public function contents() 
     {
-			return $this->contents;
+      return $this->contents;
     }
 
     abstract public function size();
@@ -92,7 +94,8 @@
 			if (!is_dir($dir)) {
 				if (file_exists($dir)) return false; # it exists and not a directory
 				if (!@mkdir($dir, 0777, true)) return false; # it does not exists and could not be created
-			}
+      }
+      
 			$retries = 3;
 			while ($retries--) {
 				try {

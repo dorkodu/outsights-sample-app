@@ -1,10 +1,12 @@
 # Outsights
 
-> **Note:** This repository contains the core code of the Outsights framework. If you want to develop an application using Outsights; download this sample app, and read the documentation : [Outsights Documentation](https://libre.dorkodu.com/outsights).
+> **Note:** This repository contains the core code of the Outsights framework. If you want to develop an application using Outsights; download the sample app, and read the documentation : [Outsights Documentation](https://libre.dorkodu.com/outsights).
 
 ## Outsights PHP Framework
 
-Outsights is a stunningly fast PHP nano-framework for building web applications with expressive, elegant, and intuitive syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Outsights attempts to take the pain out of development by easing common tough tasks used in web projects, such as routing, database abstraction, HTTP library, configuration, storage, templating, and caching.
+Outsights is a stunningly fast PHP pico-framework for building web applications with expressive, cool, and intuitive syntax. \
+We believe development can be more enjoyable, creative experience if you can write more clear and lucid code. \
+Outsights wants to achieve this by easing common hard tasks in web apps; such as routing, databases, HTTP, configuration, storage, templating, and caching.
 
 ## Official Documentation
 
@@ -17,6 +19,8 @@ Thank you for considering contributing to Outsights! The contribution guide can 
 ## Security Vulnerabilities
 
 Please review [our security policy](https://libre.dorkodu.com/outsights/security) on how to report security vulnerabilities.
+
+Also you can send any sensitive issue to [public@dorkodu.com](mailto:public@dorkodu.com). Thanks!
 
 ## License
 
