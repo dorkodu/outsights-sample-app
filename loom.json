@@ -2,7 +2,8 @@
     "knotted": {
         "classmap": [],
         "namespaces": {
-          "Outsights": "outsights/Outsights"
+          "Outsights": "outsights/Outsights",
+          "Outkicker": "loot/Outkicker"
         }
     }
 }
