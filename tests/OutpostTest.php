@@ -1,6 +1,8 @@
 <?php declare(strict_types=1);
   namespace Outsights;
 
+  require_once "loot/loom-weaver.php";
+
   use Outsights\Outpost\Outpost;
   use Outsights\Outpost\OutpostFile;
   use Outsights\Outpost\OutpostCookie;
@@ -23,21 +25,18 @@
 
     public function testSimplePing()
     {
-          $url = "";
-          $method = "POST";
-          $body = [];
+          $url = "http://localhost:8080/libre.dorkodu.com/";
+          $method = "GET";
+          
           # request
           $request = Outpost::createRequest($method, $url);
-
-          foreach ($body as $file) {
-            if ($file instanceof OutpostFile) {
-              $request->withFile($file->inputName(), $file);
-            }
-          }
 
           # response
           $response = Outpost::sendRequest($request);
           return $response;
+
+          # check if something went wrong
+          $response->getStatusCode()
     }
 
     public function seeResponse(OutpostResponse $response)
