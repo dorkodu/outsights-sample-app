@@ -1,9 +1,8 @@
 <?php
+
   declare(strict_types=1);
   
   namespace Outsights\Tests;
-
-  require_once "../loot/loom-weaver.php";
 
   use Outsights\Outpost\Outpost;
   use Outsights\Outpost\OutpostFile;
@@ -27,18 +26,18 @@
 
     public function testSimplePing()
     {
-          $url = "http://localhost:8080/libre.dorkodu.com/";
-          $method = "GET";
-          
-          # request
-          $request = Outpost::createRequest($method, $url);
+      $url = "http://localhost:8080/libre.dorkodu.com/";
+      $method = "GET";
+      
+      # request
+      $request = Outpost::createRequest($method, $url);
 
-          # response
-          $response = Outpost::sendRequest($request);
-          return $response;
+      # response
+      $response = Outpost::sendRequest($request);
+      return $response;
 
-          # check if something went wrong
-          $response->getStatusCode();
+      # check if something went wrong
+      $response->getStatusCode();
     }
 
     public function seeResponse(OutpostResponse $response)
