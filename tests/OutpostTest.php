@@ -1,7 +1,9 @@
-<?php declare(strict_types=1);
-  namespace Outsights;
+<?php
+  declare(strict_types=1);
+  
+  namespace Outsights\Tests;
 
-  require_once "loot/loom-weaver.php";
+  require_once "../loot/loom-weaver.php";
 
   use Outsights\Outpost\Outpost;
   use Outsights\Outpost\OutpostFile;
@@ -36,7 +38,7 @@
           return $response;
 
           # check if something went wrong
-          $response->getStatusCode()
+          $response->getStatusCode();
     }
 
     public function seeResponse(OutpostResponse $response)
