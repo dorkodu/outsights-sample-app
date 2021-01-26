@@ -8,7 +8,7 @@
   class Page extends AbstractPage
   {
     private const PAGES_DIR = "outsights/resources/pageweaver/pages";
-    private const PAGELET_PLACEHOLDER_PATTERN = "/{([a-zA-Z0-9-_]+).pagelet}/";
+    private const PAGELET_PLACEHOLDER_PATTERN = "/{{ ([a-zA-Z0-9-_]+).pagelet }}/";
 
 		public function __construct(string $name) {
       if (preg_match(self::NAME_PATTERN, $name)) {
